@@ -1,4 +1,3 @@
-# docs/planning/phase-1/issues/P1-02-branch-protection-and-pr-requirements.md
 ## [Governance] Configure branch protection and PR requirements
 
 ## Problem Statement

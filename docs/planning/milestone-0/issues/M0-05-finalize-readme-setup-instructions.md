@@ -1,4 +1,3 @@
-# docs/planning/milestone-0/issues/M0-05-finalize-readme-setup-instructions.md
 ## [Documentation] Finalize setup instructions in README
 
 ## Problem Statement

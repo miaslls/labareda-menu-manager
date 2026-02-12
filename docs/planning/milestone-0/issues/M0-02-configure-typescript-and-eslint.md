@@ -1,4 +1,3 @@
-# docs/planning/milestone-0/issues/M0-02-configure-typescript-and-eslint.md
 ## [Feature] Configure TypeScript and ESLint
 
 ## Problem Statement

@@ -1,4 +1,3 @@
-# docs/planning/phase-1/issues/P1-01-foundational-governance-documents.md
 ## [Documentation] Add foundational governance documents
 
 ## Problem Statement

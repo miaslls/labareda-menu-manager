@@ -1,4 +1,3 @@
-# docs/planning/phase-1/issues/P1-03-add-issue-and-pr-templates.md
 ## [Governance] Add issue and PR templates
 
 ## Problem Statement

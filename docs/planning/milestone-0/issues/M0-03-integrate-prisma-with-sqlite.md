@@ -1,4 +1,3 @@
-# docs/planning/milestone-0/issues/M0-03-integrate-prisma-with-sqlite.md
 ## [Feature] Integrate Prisma with SQLite
 
 ## Problem Statement

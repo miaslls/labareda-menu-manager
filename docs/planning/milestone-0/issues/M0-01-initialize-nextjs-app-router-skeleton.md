@@ -1,4 +1,3 @@
-# docs/planning/milestone-0/issues/M0-01-initialize-nextjs-app-router-skeleton.md
 ## [Feature] Initialize Next.js App Router skeleton
 
 ## Problem Statement

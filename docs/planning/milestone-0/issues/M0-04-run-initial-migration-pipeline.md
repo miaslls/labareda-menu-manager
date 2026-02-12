@@ -1,4 +1,3 @@
-# docs/planning/milestone-0/issues/M0-04-run-initial-migration-pipeline.md
 ## [Feature] Run initial migration pipeline
 
 ## Problem Statement

@@ -1,4 +1,3 @@
-# docs/planning/phase-1/issues/P1-04-create-labels-and-milestones.md
 ## [Governance] Create canonical labels and milestone structure
 
 ## Problem Statement
