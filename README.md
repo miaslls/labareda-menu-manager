@@ -28,7 +28,7 @@ Clarity and correctness are prioritized over speed or early generalization.
 
 * Single-restaurant scope (not multi-tenant)
 * Unified frontend and backend (Next.js App Router)
-* Prisma ORM with relational database
+* Prisma ORM with relational database (SQLite for development)
 * Explicit architectural layering
 * Strict milestone-based capability evolution
 
@@ -133,17 +133,69 @@ This project operates under a disciplined workflow:
 
 ---
 
-# Setup (Milestone 0 Target)
+# Setup
 
-These instructions will be finalized once Milestone 0 is complete.
+The repository is reproducible from a clean clone.
 
-Expected flow:
+## Prerequisites
 
-1. Clone repository
+* Node.js (LTS recommended)
+* npm (ships with Node)
+
+## Local Setup
+
+1. Clone the repository
+
+   ```bash
+   git clone <repository-url>
+   cd labareda-menu-manager
+   ```
+
 2. Install dependencies
-3. Configure environment variables
-4. Run Prisma migrations
-5. Start development server
+
+   ```bash
+   npm ci
+   ```
+
+3. Create a local environment file
+
+   Copy `.env.example` to `.env` in the project root.
+
+   The default development configuration uses:
+
+   ```env
+   DATABASE_URL="file:./prisma/dev.db"
+   ```
+
+4. Run database migrations
+
+   ```bash
+   npm run db:migrate
+   ```
+
+5. Verify toolchain health
+
+   ```bash
+   npm run check
+   ```
+
+6. Start the development server
+
+   ```bash
+   npm run dev
+   ```
+
+---
+
+## Database Notes
+
+* The local SQLite database file lives at `prisma/dev.db` (gitignored).
+* Prisma client output is generated into `generated/prisma` (gitignored).
+* The migration pipeline has been verified and documented in:
+
+  `docs/planning/milestone-0/issues/M0-04-run-initial-migration-pipeline.md`
+
+If `DATABASE_URL` is missing or incorrect, Prisma and the application will fail fast.
 
 ---
 
@@ -162,4 +214,8 @@ Scope changes require explicit architectural decisions.
 
 # Status
 
-The project is currently in governance and planning phase prior to repository initialization.
+* Phase A — Foundation and Governance: Complete
+* Phase B — Repository Initialization: Complete
+* Phase C — Milestone 0: Near completion (migration pipeline verified)
+
+Milestone 0 is closed when clean-clone setup is fully documented and reproducible.
