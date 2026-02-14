@@ -13,7 +13,10 @@
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:reset": "prisma migrate reset --force",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "format": "prettier --write .",
+    "format:paths": "prettier --write",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "7.4.0",
@@ -30,6 +33,7 @@
     "dotenv": "^17.2.4",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "prettier": "^3.8.1",
     "prisma": "7.4.0",
     "typescript": "^5"
   }
