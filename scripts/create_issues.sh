@@ -110,6 +110,7 @@ infer_type_label() {
       decision) echo "type: decision" ;;
       feature) echo "type: feature" ;;
       refactor) echo "type: refactor" ;;
+      chore) echo "type: governance" ;;
       documentation|docs|doc) echo "type: documentation" ;;
       spike) echo "type: spike" ;;
       governance) echo "type: governance" ;;
@@ -124,6 +125,11 @@ infer_area_label() {
   local title="$1"
   local lower
   lower="$(echo "$title" | tr '[:upper:]' '[:lower:]')"
+
+  # tooling
+  if echo "$lower" | grep -Eq "\btooling\b|prettier|\bformat\b|formatting|\blint\b|\beslint\b"; then
+    echo "area: tooling"; return
+  fi
 
   # governance / repo administration
   if echo "$lower" | grep -Eq "\bgovernance\b|branch protection|pull request template|pr template|\btemplates?\b|\blabels?\b|\bmilestones?\b|\bgithub\b|\brepo\b"; then
