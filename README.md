@@ -218,6 +218,9 @@ Scope changes require explicit architectural decisions.
 
 - Phase A — Foundation and Governance: Complete
 - Phase B — Repository Initialization: Complete
-- Phase C — Milestone 0: Near completion (migration pipeline verified)
+- Phase C — Milestone 0: Complete
 
-Milestone 0 is closed when clean-clone setup is fully documented and reproducible.
+Milestone 0 established the governed repository baseline, deterministic Prisma + SQLite toolchain,
+verified migration pipeline, and fully reproducible clean-clone setup.
+
+The project is ready to proceed to Milestone 1 — Draft Workspace Exists.
