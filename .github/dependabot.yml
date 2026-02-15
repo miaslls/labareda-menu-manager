@@ -1,0 +1,40 @@
+version: 2
+
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "09:00"
+      timezone: "America/Sao_Paulo"
+
+    open-pull-requests-limit: 5
+
+    groups:
+      next:
+        patterns:
+          - "next"
+          - "eslint-config-next"
+
+      prisma:
+        patterns:
+          - "prisma"
+          - "@prisma/*"
+
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+
+      tooling:
+        patterns:
+          - "typescript"
+          - "@types/*"
+          - "eslint"
+          - "@eslint/*"
+
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
