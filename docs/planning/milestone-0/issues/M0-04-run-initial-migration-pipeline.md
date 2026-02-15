@@ -10,15 +10,16 @@ Without an early validation, later modeling work risks becoming blocked by tooli
 
 ## Why This Matters Now
 
-Milestone 0 is complete only when the project can be bootstrapped from a clean clone, including migrations.
+Milestone 0 is complete only when the project can be bootstrapped from a clean clone, including
+migrations.
 
 ---
 
 ## Success Criteria
 
-* [x] An initial migration is created, applied, and committed
-* [x] Migration runs cleanly from a fresh clone
-* [x] Database reset flow is verified
+- [x] An initial migration is created, applied, and committed
+- [x] Migration runs cleanly from a fresh clone
+- [x] Database reset flow is verified
 
 ---
 
@@ -26,12 +27,12 @@ Milestone 0 is complete only when the project can be bootstrapped from a clean c
 
 In scope:
 
-* Create/apply the initial migration (even if schema is minimal)
-* Verify reset workflow
+- Create/apply the initial migration (even if schema is minimal)
+- Verify reset workflow
 
 Out of scope:
 
-* Domain entity models (beyond what is necessary to run a migration)
+- Domain entity models (beyond what is necessary to run a migration)
 
 ---
 
@@ -44,9 +45,8 @@ Out of scope:
 
 # Evidence — Initial migration pipeline verified (Milestone 0)
 
-Date: 2026-02-12
-Verifier: Mia
-Goal: Prove Prisma + SQLite migration workflow is reliable and repeatable from a clean clone.
+Date: 2026-02-12 Verifier: Mia Goal: Prove Prisma + SQLite migration workflow is reliable and
+repeatable from a clean clone.
 
 ## Preconditions
 
@@ -58,6 +58,7 @@ Goal: Prove Prisma + SQLite migration workflow is reliable and repeatable from a
   DATABASE_URL="file:./prisma/dev.db"
 
 Notes:
+
 - SQLite database file is expected at `prisma/dev.db` (gitignored).
 - Prisma client output is expected at `generated/prisma` (gitignored).
 - Prisma config is expected to load dotenv via `prisma.config.ts`.
@@ -66,12 +67,9 @@ Notes:
 
 # Evidence — Initial migration pipeline verified (Milestone 0)
 
-Date: 2026-02-12
-Verifier: Mia
-Result: PASS
+Date: 2026-02-12 Verifier: Mia Result: PASS
 
-Goal
-Prove Prisma + SQLite migration workflow is reliable and repeatable from a clean clone.
+Goal Prove Prisma + SQLite migration workflow is reliable and repeatable from a clean clone.
 
 ## Preconditions
 
@@ -95,9 +93,8 @@ npm run db:validate
 
 Output:
 
-Loaded Prisma config from prisma.config.ts.
-Prisma schema loaded from prisma\schema.prisma.
-The schema at prisma\schema.prisma is valid 🚀
+Loaded Prisma config from prisma.config.ts. Prisma schema loaded from prisma\schema.prisma. The
+schema at prisma\schema.prisma is valid 🚀
 
 ### 2) Generate Prisma client
 
@@ -107,9 +104,8 @@ npm run db:generate
 
 Output:
 
-Loaded Prisma config from prisma.config.ts.
-Prisma schema loaded from prisma\schema.prisma.
-✔ Generated Prisma Client (7.4.0) to .\generated\prisma in 33ms
+Loaded Prisma config from prisma.config.ts. Prisma schema loaded from prisma\schema.prisma. ✔
+Generated Prisma Client (7.4.0) to .\generated\prisma in 33ms
 
 ### 3) Apply migrations (create DB + apply initial migration)
 
@@ -119,8 +115,7 @@ npm run db:migrate
 
 Output:
 
-Loaded Prisma config from prisma.config.ts.
-Prisma schema loaded from prisma\schema.prisma.
+Loaded Prisma config from prisma.config.ts. Prisma schema loaded from prisma\schema.prisma.
 Datasource "db": SQLite database "dev.db" at "file:./prisma/dev.db"
 
 SQLite database dev.db created at file:./prisma/dev.db
@@ -129,9 +124,7 @@ Applying migration `20260212173944_smoke_test`
 
 The following migration(s) have been applied:
 
-migrations/
-  └─ 20260212173944_smoke_test/
-    └─ migration.sql
+migrations/ └─ 20260212173944_smoke_test/ └─ migration.sql
 
 Your database is now in sync with your schema.
 
@@ -143,8 +136,7 @@ npm run db:reset
 
 Output:
 
-Loaded Prisma config from prisma.config.ts.
-Prisma schema loaded from prisma\schema.prisma.
+Loaded Prisma config from prisma.config.ts. Prisma schema loaded from prisma\schema.prisma.
 Datasource "db": SQLite database "dev.db" at "file:./prisma/dev.db"
 
 Applying migration `20260212173944_smoke_test`
@@ -153,9 +145,7 @@ Database reset successful
 
 The following migration(s) have been applied:
 
-migrations/
-  └─ 20260212173944_smoke_test/
-    └─ migration.sql
+migrations/ └─ 20260212173944_smoke_test/ └─ migration.sql
 
 ### 5) Prisma Studio connectivity
 
@@ -189,7 +179,7 @@ Tracked (must exist in repo):
 Untracked (must remain gitignored):
 
 - prisma/dev.db
-- generated/prisma/**
+- generated/prisma/\*\*
 
 ---
 
@@ -197,4 +187,3 @@ Untracked (must remain gitignored):
 
 - Prisma is resolving configuration and schema deterministically via `prisma.config.ts`.
 - Reset is non-interactive (`--force`) and re-applies migrations cleanly.
-

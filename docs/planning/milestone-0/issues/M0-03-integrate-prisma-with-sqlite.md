@@ -26,10 +26,12 @@ Milestone 0 requires a verified persistence toolchain to prevent later churn.
 ## Scope & Constraints
 
 In scope:
+
 - Prisma initialization
 - SQLite configuration
 
 Out of scope:
+
 - Domain schema modeling (MenuVersion/Category/Item)
 - Seed data
 

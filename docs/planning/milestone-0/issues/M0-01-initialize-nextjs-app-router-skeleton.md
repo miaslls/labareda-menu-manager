@@ -25,9 +25,11 @@ Milestone 0 establishes the technical foundation required for all future milesto
 ## Scope & Constraints
 
 In scope:
+
 - Next.js project initialization
 
 Out of scope:
+
 - Domain modeling
 - Database integration
 - Authentication

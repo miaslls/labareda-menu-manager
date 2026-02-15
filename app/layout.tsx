@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
-import "./globals.css";
+import type { Metadata } from 'next';
+import './globals.css';
 
 export const metadata: Metadata = {
-  title: "Labareda Menu Manager",
-  description: "Labareda Menu Manager application.",
+  title: 'Labareda Menu Manager',
+  description: 'Labareda Menu Manager application.',
 };
 
 export default function RootLayout({

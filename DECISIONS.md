@@ -2,8 +2,8 @@
 
 This file records architectural decisions that introduce constraints or long-term consequences.
 
-> Status: Append-only. Accepted ADRs are not edited.
-> Changes require a new ADR that supersedes the prior one.
+> Status: Append-only. Accepted ADRs are not edited. Changes require a new ADR that supersedes the
+> prior one.
 
 ---
 
@@ -27,15 +27,15 @@ All PRs that introduce or rely on an ADR must link to it.
 
 # ADR Index
 
-| ADR | Title | Status | Date | Supersedes |
-| --- | ----- | ------ | ---- | ---------- |
-| ADR-001 | Workspace publishing model (MenuVersion B1) | Accepted | 2026-02-11 | — |
-| ADR-002 | Audience-based domain reads | Accepted | 2026-02-11 | — |
-| ADR-003 | Ordering model for categories and items | Accepted | 2026-02-11 | — |
-| ADR-004 | Money representation (priceCents) | Accepted | 2026-02-11 | — |
-| ADR-005 | Item removal is visibility-based | Accepted | 2026-02-11 | — |
-| ADR-006 | Minimal authentication boundary in first viable version | Accepted | 2026-02-11 | — |
-| ADR-007 | Architecture Stability and Change Control Policy | Accepted | 2026-02-11 | — |
+| ADR     | Title                                                   | Status   | Date       | Supersedes |
+| ------- | ------------------------------------------------------- | -------- | ---------- | ---------- |
+| ADR-001 | Workspace publishing model (MenuVersion B1)             | Accepted | 2026-02-11 | —          |
+| ADR-002 | Audience-based domain reads                             | Accepted | 2026-02-11 | —          |
+| ADR-003 | Ordering model for categories and items                 | Accepted | 2026-02-11 | —          |
+| ADR-004 | Money representation (priceCents)                       | Accepted | 2026-02-11 | —          |
+| ADR-005 | Item removal is visibility-based                        | Accepted | 2026-02-11 | —          |
+| ADR-006 | Minimal authentication boundary in first viable version | Accepted | 2026-02-11 | —          |
+| ADR-007 | Architecture Stability and Change Control Policy        | Accepted | 2026-02-11 | —          |
 
 ---
 
@@ -45,9 +45,7 @@ Use this template for new ADRs.
 
 ## ADR-XXX — Title
 
-Status: Proposed | Accepted | Superseded
-Date: YYYY-MM-DD
-Supersedes: ADR-XXX (optional)
+Status: Proposed | Accepted | Superseded Date: YYYY-MM-DD Supersedes: ADR-XXX (optional)
 
 ### Decision
 
@@ -85,8 +83,8 @@ What constraints does this introduce?
 
 Concrete work that must occur as a result.
 
-- [ ] 
-- [ ] 
+- [ ]
+- [ ]
 
 (Include only when applicable. Remove this section if no follow-ups are required.)
 
@@ -94,18 +92,17 @@ Concrete work that must occur as a result.
 
 # ADR-001 — Workspace publishing model (MenuVersion B1)
 
-Status: Accepted
-Date: 2026-02-11
-Supersedes: —
+Status: Accepted Date: 2026-02-11 Supersedes: —
 
 ### Decision
 
-Use a MenuVersion workspace model with a single editable DRAFT and a single public PUBLISHED version.
+Use a MenuVersion workspace model with a single editable DRAFT and a single public PUBLISHED
+version.
 
 ### Context
 
-The system requires safe editing and preview without leaking draft changes to the public menu.
-A simple draft/publish model is needed that remains owner-friendly and avoids partial publish states.
+The system requires safe editing and preview without leaking draft changes to the public menu. A
+simple draft/publish model is needed that remains owner-friendly and avoids partial publish states.
 
 ### Options Considered
 
@@ -122,8 +119,8 @@ A simple draft/publish model is needed that remains owner-friendly and avoids pa
 
 ### Outcome
 
-MenuVersion workspaces provide a stable public surface and a safe draft workspace.
-Publishing is a pointer flip, not a complex versioning system.
+MenuVersion workspaces provide a stable public surface and a safe draft workspace. Publishing is a
+pointer flip, not a complex versioning system.
 
 ### Consequences
 
@@ -131,23 +128,21 @@ Publishing is a pointer flip, not a complex versioning system.
 - Domain operations must resolve the correct workspace.
 - Publishing must be transactional.
 
-
 ---
 
 # ADR-002 — Audience-based domain reads
 
-Status: Accepted
-Date: 2026-02-11
-Supersedes: —
+Status: Accepted Date: 2026-02-11 Supersedes: —
 
 ### Decision
 
-Domain reads are audience-aware: public reads from PUBLISHED, adminPreview reads from DRAFT using public visibility rules, adminEdit reads from DRAFT including hidden content.
+Domain reads are audience-aware: public reads from PUBLISHED, adminPreview reads from DRAFT using
+public visibility rules, adminEdit reads from DRAFT including hidden content.
 
 ### Context
 
-Preview must render draft data with the same inclusion rules as public without introducing a third lifecycle state.
-UI must not embed visibility or lifecycle logic.
+Preview must render draft data with the same inclusion rules as public without introducing a third
+lifecycle state. UI must not embed visibility or lifecycle logic.
 
 ### Options Considered
 
@@ -169,23 +164,21 @@ Audience-based reads keep filtering logic centralized and predictable.
 - Domain layer owns inclusion filters.
 - Route handlers translate but do not decide visibility.
 
-
 ---
 
 # ADR-003 — Ordering model for categories and items
 
-Status: Accepted
-Date: 2026-02-11
-Supersedes: —
+Status: Accepted Date: 2026-02-11 Supersedes: —
 
 ### Decision
 
-Use explicit integer `sortOrder` fields with 0-based, contiguous, unique ordering.
-Reordering occurs via stable neighbor swaps through domain operations only.
+Use explicit integer `sortOrder` fields with 0-based, contiguous, unique ordering. Reordering occurs
+via stable neighbor swaps through domain operations only.
 
 ### Context
 
-Ordering is foundational and easily becomes ambiguous if implicitly encoded in UI behavior or database insertion order.
+Ordering is foundational and easily becomes ambiguous if implicitly encoded in UI behavior or
+database insertion order.
 
 ### Options Considered
 
@@ -208,14 +201,11 @@ Neighbor swaps preserve uniqueness without temporary collisions and remain easy 
 - Writes affecting ordering must be transactional.
 - Corrupted ordering is surfaced as an error, not silently repaired.
 
-
 ---
 
 # ADR-004 — Money representation (priceCents)
 
-Status: Accepted
-Date: 2026-02-11
-Supersedes: —
+Status: Accepted Date: 2026-02-11 Supersedes: —
 
 ### Decision
 
@@ -244,14 +234,11 @@ Integer cents provide correct arithmetic and predictable persistence.
 
 - UI must format cents into BRL currency.
 
-
 ---
 
 # ADR-005 — Item removal is visibility-based
 
-Status: Accepted
-Date: 2026-02-11
-Supersedes: —
+Status: Accepted Date: 2026-02-11 Supersedes: —
 
 ### Decision
 
@@ -259,8 +246,8 @@ Removing an item sets `isVisible=false` (soft hide). Items are not hard-deleted 
 
 ### Context
 
-Owners often want to temporarily remove items without losing configuration.
-Hard deletes also increase risk of accidental loss.
+Owners often want to temporarily remove items without losing configuration. Hard deletes also
+increase risk of accidental loss.
 
 ### Options Considered
 
@@ -283,23 +270,21 @@ Visibility-based hide provides the needed behavior with minimal additional conce
 - Public inclusion requires isVisible=true.
 - Admin edit must allow hidden items to be shown.
 
-
 ---
 
 # ADR-006 — Minimal authentication boundary in first viable version
 
-Status: Accepted
-Date: 2026-02-11
-Supersedes: —
+Status: Accepted Date: 2026-02-11 Supersedes: —
 
 ### Decision
 
-Include minimal authentication in the first viable version to protect admin routes, admin preview, and all mutation endpoints.
+Include minimal authentication in the first viable version to protect admin routes, admin preview,
+and all mutation endpoints.
 
 ### Context
 
-Even in single-owner scenarios, accidental exposure of admin endpoints is a high-impact risk.
-The system should not rely on deployment assumptions for safety.
+Even in single-owner scenarios, accidental exposure of admin endpoints is a high-impact risk. The
+system should not rely on deployment assumptions for safety.
 
 ### Options Considered
 
@@ -322,22 +307,21 @@ Minimal authentication provides practical protection without expanding into acco
 - Public read remains unauthenticated.
 - Auth is a required milestone capability before considering deployment.
 
-
 ---
 
 # ADR-007 — Architecture Stability and Change Control Policy
 
-Status: Accepted
-Date: 2026-02-11
-Supersedes: —
+Status: Accepted Date: 2026-02-11 Supersedes: —
 
 ### Decision
 
-`ARCHITECTURE.md` is considered frozen as of Milestone 0. Any structural change to the system architecture requires a new ADR.
+`ARCHITECTURE.md` is considered frozen as of Milestone 0. Any structural change to the system
+architecture requires a new ADR.
 
 ### Context
 
-The architecture document defines system boundaries, invariants, state transitions, layering rules, and publish semantics. Silent modification would erode structural clarity and long-term consistency.
+The architecture document defines system boundaries, invariants, state transitions, layering rules,
+and publish semantics. Silent modification would erode structural clarity and long-term consistency.
 
 ### Options Considered
 
@@ -353,11 +337,11 @@ The architecture document defines system boundaries, invariants, state transitio
 
 ### Outcome
 
-Requiring an ADR for structural changes ensures architectural evolution remains intentional, reviewable, and historically traceable.
+Requiring an ADR for structural changes ensures architectural evolution remains intentional,
+reviewable, and historically traceable.
 
 ### Consequences
 
 - Structural changes require explicit reasoning and documentation.
 - Architectural evolution becomes historically auditable.
 - Minor wording clarifications are allowed without ADR if they do not change behavior or invariants.
-
