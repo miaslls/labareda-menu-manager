@@ -4,7 +4,8 @@
 
 The repository requires guardrails that enforce the intended professional workflow.
 
-Without protections, direct pushes to main will bypass review ritual and weaken the learning objectives.
+Without protections, direct pushes to main will bypass review ritual and weaken the learning
+objectives.
 
 ---
 
@@ -26,9 +27,11 @@ Branch protection is part of the operating model and must exist before the first
 ## Scope & Constraints
 
 In scope:
+
 - Configure branch protection in GitHub settings
 
 Out of scope:
+
 - CI checks (optional later)
 - CODEOWNERS (not required for this project)
 

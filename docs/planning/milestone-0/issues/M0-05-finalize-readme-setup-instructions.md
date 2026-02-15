@@ -25,9 +25,11 @@ Milestone 0 requires a reliable bootstrap path before any domain work begins.
 ## Scope & Constraints
 
 In scope:
+
 - Setup instructions in README
 
 Out of scope:
+
 - Deployment instructions
 - CI instructions (optional later)
 

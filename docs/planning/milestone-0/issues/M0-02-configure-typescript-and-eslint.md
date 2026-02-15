@@ -26,10 +26,12 @@ Milestone 0 is the correct time to establish static checks before implementation
 ## Scope & Constraints
 
 In scope:
+
 - TypeScript configuration
 - ESLint configuration and scripts
 
 Out of scope:
+
 - Prettier (optional later)
 - CI enforcement (optional later)
 

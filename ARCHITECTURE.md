@@ -1,6 +1,7 @@
 # Architecture Reference
 
-> Status: Frozen as of Milestone 0. Changes to this document require an architectural decision recorded in `DECISIONS.md`.
+> Status: Frozen as of Milestone 0. Changes to this document require an architectural decision
+> recorded in `DECISIONS.md`.
 
 Labareda Menu Manager Architecture
 
@@ -8,7 +9,8 @@ This document describes the structural, behavioral, and dependency model of the 
 
 It is authoritative for system shape and boundaries.
 
-It does not record decisions (see `DECISIONS.md`). It does not describe milestones (see `MILESTONES.md`). It does not describe workflow (see execution plan).
+It does not record decisions (see `DECISIONS.md`). It does not describe milestones (see
+`MILESTONES.md`). It does not describe workflow (see execution plan).
 
 ---
 
@@ -24,7 +26,8 @@ The system supports:
 - Strict ordering guarantees
 - Minimal authentication protection
 
-The system is intentionally non-distributed and operates as a single application with a single database.
+The system is intentionally non-distributed and operates as a single application with a single
+database.
 
 ---
 
@@ -270,17 +273,14 @@ Goal: Create a new item in a category within the DRAFT workspace.
 Flow:
 
 1. UI (Admin)
-
    - Admin submits item form (name, priceCents, categoryId).
    - UI does not implement domain rules.
 
 2. Route Handler
-
    - Validates transport concerns (required fields, type checks).
    - Calls domain function: `lib/items.createItem(...)`.
 
 3. Domain (lib/)
-
    - Resolves DRAFT MenuVersion.
    - Validates domain rules:
      - category exists in the DRAFT workspace
@@ -291,11 +291,9 @@ Flow:
    - Returns success or explicit domain error.
 
 4. Persistence (Prisma)
-
    - Executes database operations.
 
 5. Route Handler
-
    - Maps domain result:
      - success → 201 JSON
      - domain validation error → 400
@@ -303,7 +301,6 @@ Flow:
      - invariant/corruption error → 409 or 500 depending on classification
 
 6. UI
-
    - Updates UI state.
    - Shows explicit error message if returned.
 
@@ -314,16 +311,13 @@ Goal: Make the draft menu live and create a fresh draft seeded from it.
 Flow:
 
 1. UI (Admin)
-
    - Admin clicks Publish.
 
 2. Route Handler
-
    - Confirms authenticated access.
    - Calls domain function: `lib/menu.publishDraft()`.
 
 3. Domain (lib/)
-
    - Validates invariants:
      - ordering invariants for categories and items
      - referential integrity (items match category MenuVersion)
@@ -335,11 +329,9 @@ Flow:
    - Returns success or explicit domain error.
 
 4. Persistence (Prisma)
-
    - Executes the transaction.
 
 5. UI
-
    - Redirects to admin edit view of the new DRAFT.
    - Public menu now reflects the newly published content.
 
@@ -350,21 +342,19 @@ Notes:
 
 ## 5A.3 Example: Move Category Up (Ordering Swap)
 
-Goal: Move a category up by one position within the DRAFT workspace while preserving ordering invariants.
+Goal: Move a category up by one position within the DRAFT workspace while preserving ordering
+invariants.
 
 Flow:
 
 1. UI (Admin)
-
    - Admin clicks “Move up” on a category.
 
 2. Route Handler
-
    - Validates transport concerns (categoryId present).
    - Calls domain function: `lib/categories.moveUp({ categoryId })`.
 
 3. Domain (lib/)
-
    - Resolves DRAFT MenuVersion.
    - Loads the target category and its neighbor (sortOrder - 1) within the same MenuVersion.
    - Applies rules:
@@ -376,18 +366,15 @@ Flow:
    - Returns success or explicit corruption/invariant error.
 
 4. Persistence (Prisma)
-
    - Updates the two affected rows within the transaction.
 
 5. Route Handler
-
    - Maps domain result:
      - success → 200
      - not found → 404
      - corrupted ordering → 409
 
 6. UI
-
    - Re-renders list using the returned ordering.
    - No special-case UI ordering logic is allowed.
 
@@ -401,7 +388,8 @@ The system distinguishes error classes to keep behavior predictable and debuggab
 
 ### ValidationError
 
-Used when user-provided input is structurally valid at the transport layer, but violates domain rules.
+Used when user-provided input is structurally valid at the transport layer, but violates domain
+rules.
 
 Examples:
 
@@ -420,7 +408,8 @@ Examples:
 
 ### ConflictError
 
-Used when state is valid but an operation cannot be applied due to concurrency or a competing constraint.
+Used when state is valid but an operation cannot be applied due to concurrency or a competing
+constraint.
 
 Examples:
 
@@ -463,7 +452,8 @@ Route handlers translate domain errors into HTTP responses.
 - ValidationError → 400
 - NotFoundError → 404
 - ConflictError → 409
-- CorruptionError → 409 (or 500 if treating as internal fault; choose one policy and keep it consistent)
+- CorruptionError → 409 (or 500 if treating as internal fault; choose one policy and keep it
+  consistent)
 - AuthError → 401 (or 403 depending on auth mechanism)
 - UnexpectedError → 500
 
@@ -483,7 +473,8 @@ The UI should render `message` directly and avoid interpreting error causes beyo
 
 ## 5B.4 Reserved Error Code Appendix
 
-This appendix defines stable, reusable error codes. These codes form part of the transport contract and must not be changed casually.
+This appendix defines stable, reusable error codes. These codes form part of the transport contract
+and must not be changed casually.
 
 ### Category Errors
 
@@ -530,7 +521,7 @@ This appendix defines stable, reusable error codes. These codes form part of the
 
 Guidelines:
 
-- Error codes are UPPER\_SNAKE\_CASE.
+- Error codes are UPPER_SNAKE_CASE.
 - Codes are stable identifiers; messages may evolve.
 - Codes must be defined in a centralized location in the domain layer.
 - New codes require architectural review if they reflect new invariants.
@@ -626,4 +617,3 @@ The following changes require decision recording:
 - Authentication boundary changes
 
 Structural ambiguity is treated as architectural debt.
-

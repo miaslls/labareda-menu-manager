@@ -2,7 +2,8 @@
 
 This directory contains operational tooling used to manage and maintain the repository.
 
-Scripts are part of the governance layer of the project and are committed from the first repository initialization.
+Scripts are part of the governance layer of the project and are committed from the first repository
+initialization.
 
 ---
 
@@ -59,4 +60,3 @@ DRY_RUN=0 scripts/create_issues.sh \
 - Issue files are considered source of truth for planning.
 
 Scripts may evolve, but changes affecting workflow must be reviewed in a pull request.
-

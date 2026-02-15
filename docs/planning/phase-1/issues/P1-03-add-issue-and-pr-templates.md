@@ -2,7 +2,8 @@
 
 ## Problem Statement
 
-Issues and PRs require consistent structure to support review quality, traceability, and disciplined execution.
+Issues and PRs require consistent structure to support review quality, traceability, and disciplined
+execution.
 
 Without templates, issues drift into vague descriptions and PRs become harder to verify.
 
@@ -27,9 +28,11 @@ Templates are a governance tool and must exist before the first issue-driven PR 
 ## Scope & Constraints
 
 In scope:
+
 - Add templates under `.github/` (or GitHub-supported directory structure)
 
 Out of scope:
+
 - Creating issues (handled separately)
 - CI automation
 

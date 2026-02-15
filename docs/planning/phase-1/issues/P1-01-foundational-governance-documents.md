@@ -2,9 +2,11 @@
 
 ## Problem Statement
 
-The repository must contain the authoritative governance and architecture documents before any technical implementation begins.
+The repository must contain the authoritative governance and architecture documents before any
+technical implementation begins.
 
-Without these documents committed, constraints and invariants will drift and early work will be harder to review and maintain.
+Without these documents committed, constraints and invariants will drift and early work will be
+harder to review and maintain.
 
 ---
 
@@ -30,10 +32,12 @@ Documentation is a first-class artifact, and the architecture is frozen as of Mi
 ## Scope & Constraints
 
 In scope:
+
 - Add the documents as committed files
 - Ensure cross-reference correctness
 
 Out of scope:
+
 - Any application code
 - Any CI/CD setup beyond what is required for PR workflow
 

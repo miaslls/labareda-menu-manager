@@ -25,10 +25,12 @@ The project uses milestone-based capability boundaries and a strict issue → PR
 ## Scope & Constraints
 
 In scope:
+
 - Create labels in GitHub
 - Create milestones in GitHub
 
 Out of scope:
+
 - Project boards (optional later)
 - Automated label enforcement
 

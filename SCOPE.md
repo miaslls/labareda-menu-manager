@@ -1,7 +1,7 @@
 # Scope
 
-Status: Active. Defines functional boundaries of the system.
-Changes to scope require architectural review and may require a new ADR.
+Status: Active. Defines functional boundaries of the system. Changes to scope require architectural
+review and may require a new ADR.
 
 ---
 
@@ -83,5 +83,5 @@ Scope drift without decision recording is treated as governance violation.
 
 Clarity over breadth.
 
-The system prioritizes correctness, architectural discipline, and maintainability over feature expansion.
-
+The system prioritizes correctness, architectural discipline, and maintainability over feature
+expansion.
