@@ -16,7 +16,9 @@
     "db:studio": "prisma studio",
     "format": "prettier --write .",
     "format:paths": "prettier --write",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "7.4.1",
@@ -35,6 +37,7 @@
     "eslint-config-next": "16.1.6",
     "prettier": "^3.8.1",
     "prisma": "7.4.1",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.0.18"
   }
 }
