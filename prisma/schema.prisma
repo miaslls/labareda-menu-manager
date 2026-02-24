@@ -7,7 +7,15 @@ datasource db {
   provider = "sqlite"
 }
 
-model PrismaSmokeTest {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
+enum MenuVersionStatus {
+  DRAFT
+  PUBLISHED
+  REPLACED
+}
+
+model MenuVersion {
+  id        String            @id @default(cuid())
+  status    MenuVersionStatus @default(DRAFT)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
 }
