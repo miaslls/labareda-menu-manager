@@ -36,6 +36,7 @@ All PRs that introduce or rely on an ADR must link to it.
 | ADR-005 | Item removal is visibility-based                        | Accepted | 2026-02-11 | —          |
 | ADR-006 | Minimal authentication boundary in first viable version | Accepted | 2026-02-11 | —          |
 | ADR-007 | Architecture Stability and Change Control Policy        | Accepted | 2026-02-11 | —          |
+| ADR-008 | Domain error taxonomy and invariant failure model       | Accepted | 2026-02-24 | —          |
 
 ---
 
@@ -345,3 +346,73 @@ reviewable, and historically traceable.
 - Structural changes require explicit reasoning and documentation.
 - Architectural evolution becomes historically auditable.
 - Minor wording clarifications are allowed without ADR if they do not change behavior or invariants.
+
+---
+
+# ADR-008 — Domain error taxonomy and invariant failure model
+
+Status: Accepted Date: 2026-02-24 Supersedes: —
+
+### Decision
+
+Introduce a structured DomainError base class and require all expected domain-layer failures
+(including invariant violations) to extend it.
+
+Domain errors must include:
+
+- A stable `code` identifier
+- Compact, serializable `meta` data for debugging
+- No infrastructure or transport concerns (no Prisma, no HTTP semantics)
+
+Invariant violations must fail loudly by throwing a specific DomainError subclass.
+
+### Context
+
+Milestone 1 introduces the first enforced invariant: exactly one DRAFT MenuVersion must exist at all
+times.
+
+The system requires a deterministic, structured way for the domain layer to surface corruption
+without silently repairing it and without leaking infrastructure details.
+
+Without a taxonomy:
+
+- Errors would be ad hoc
+- Mapping at route boundaries would become inconsistent
+- Debugging invariant failures would be harder
+- Future invariants would lack a consistent failure model
+
+### Options Considered
+
+- Use plain Error with message-only failures
+- Use subclass-based errors without stable codes
+- Use a structured DomainError base class with explicit codes and metadata
+
+### Criteria
+
+- Deterministic error classification
+- Independence from infrastructure
+- Debuggability without log noise
+- Compatibility with future route-layer mapping
+
+### Outcome
+
+A DomainError base class establishes a stable contract for all domain failures.
+
+Specific invariant violations (e.g., DRAFT invariant) extend DomainError and define a precise `code`
+and compact metadata.
+
+The domain layer becomes responsible for surfacing corruption explicitly rather than silently
+repairing it.
+
+### Consequences
+
+- Domain functions must throw DomainError (or subclasses) for expected business failures.
+- Route handlers must classify domain failures using `instanceof DomainError` or `error.code`.
+- Domain errors must remain serializable and infrastructure-agnostic.
+- Future invariants must follow the same taxonomy.
+
+### Follow-ups
+
+- [ ] Implement DomainError base class
+- [ ] Implement DraftInvariantViolationError
+- [ ] Add deterministic tests for invariant failure modes
