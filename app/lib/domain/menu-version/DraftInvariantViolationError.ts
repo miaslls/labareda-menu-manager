@@ -5,7 +5,7 @@ type DraftInvariantViolationMeta = {
   draftIds: string[];
 };
 
-export class DraftInvariantViolationError extends DomainError {
+export class DraftInvariantViolationError extends DomainError<DraftInvariantViolationMeta> {
   constructor(meta: DraftInvariantViolationMeta) {
     super('DRAFT_INVARIANT_VIOLATION', 'Expected exactly one DRAFT MenuVersion.', meta);
 
