@@ -1,8 +1,8 @@
 import { describe, expect, test } from 'vitest';
 
 import { DraftInvariantViolationError } from '../menu-version/DraftInvariantViolationError';
-import { requireSingleDraftMenuVersion } from '../menu-version/requireSingleDraftMenuVersion';
 import { MENU_VERSION_STATUS } from '../menu-version/MenuVersionStatus';
+import { requireSingleDraftMenuVersion } from '../menu-version/requireSingleDraftMenuVersion';
 
 function isDraftInvariantViolationError(err: unknown): err is DraftInvariantViolationError {
   return err instanceof DraftInvariantViolationError;

@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'vitest';
+
 import { DomainError } from '../errors/DomainError';
 import { DraftInvariantViolationError } from '../menu-version/DraftInvariantViolationError';
 

@@ -1,9 +1,10 @@
-import { db } from '@/app/lib/db';
 
 import type { MenuVersion } from '@domain/menu-version/MenuVersion';
 import type { MenuVersionRepository } from '@domain/menu-version/repositories/MenuVersionRepository';
 
 import { mapPrismaStatusToDomain } from '@persistence/menu-version/mapStatus';
+
+import { db } from '@/app/lib/db';
 
 export class PrismaMenuVersionRepository implements MenuVersionRepository {
   async listAll(): Promise<MenuVersion[]> {

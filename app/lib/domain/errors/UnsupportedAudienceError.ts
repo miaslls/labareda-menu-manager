@@ -1,4 +1,5 @@
 import { DomainError } from './DomainError';
+
 import type { Audience } from '../Audience';
 
 type UnsupportedAudienceMeta = {
