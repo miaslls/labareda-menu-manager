@@ -1,4 +1,5 @@
 import type { MenuVersionStatus } from '@domain/menu-version/MenuVersionStatus';
+
 import { MenuVersionStatus as PrismaMenuVersionStatus } from '@/generated/prisma/client';
 
 function assertNever(x: never): never {
