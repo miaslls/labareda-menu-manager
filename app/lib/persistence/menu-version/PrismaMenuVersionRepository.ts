@@ -1,4 +1,3 @@
-
 import type { MenuVersion } from '@domain/menu-version/MenuVersion';
 import type { MenuVersionRepository } from '@domain/menu-version/repositories/MenuVersionRepository';
 
