@@ -1,5 +1,5 @@
 import { requireSingleDraftMenuVersion } from './requireSingleDraftMenuVersion';
-import { AUDIENCE, type Audience } from '../Audience';
+import { type Audience, AUDIENCE } from '../Audience';
 import { UnsupportedAudienceError } from '../errors/UnsupportedAudienceError';
 
 import type { MenuVersion } from './MenuVersion';

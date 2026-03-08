@@ -1,6 +1,6 @@
-import type { MenuVersionStatus } from '@domain/menu-version/MenuVersionStatus';
-
 import { MenuVersionStatus as PrismaMenuVersionStatus } from '@/generated/prisma/client';
+
+import type { MenuVersionStatus } from '@domain/menu-version/MenuVersionStatus';
 
 function assertNever(x: never): never {
   throw new Error(`Unhandled status: ${String(x)}`);
