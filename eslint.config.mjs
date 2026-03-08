@@ -13,24 +13,30 @@ const eslintConfig = defineConfig([
     },
     settings: {
       'import/resolver': {
-        typescript: {}, // reads tsconfig paths: @/*, @domain/*, etc.
+        typescript: {},
       },
     },
     rules: {
       'import/order': [
         'error',
         {
-          groups: ['builtin', 'external', 'internal', ['parent', 'sibling', 'index'], 'type'],
+          groups: [['builtin', 'external'], ['internal', 'parent', 'sibling', 'index'], ['type']],
           pathGroups: [
-            { pattern: '@domain/**', group: 'internal', position: 'before' },
-            { pattern: '@persistence/**', group: 'internal', position: 'before' },
-            { pattern: '@lib/**', group: 'internal', position: 'before' },
+            { pattern: '@domain/**', group: 'internal', position: 'after' },
+            { pattern: '@persistence/**', group: 'internal', position: 'after' },
+            { pattern: '@lib/**', group: 'internal', position: 'after' },
             { pattern: '@/*', group: 'internal', position: 'after' },
           ],
-          pathGroupsExcludedImportTypes: ['builtin'],
+          distinctGroup: false,
           'newlines-between': 'always',
-          alphabetize: { order: 'asc', caseInsensitive: true },
+          alphabetize: {
+            order: 'asc',
+            orderImportKind: 'asc',
+            caseInsensitive: true,
+          },
+          named: true,
           warnOnUnassignedImports: true,
+          sortTypesGroup: true,
         },
       ],
     },
