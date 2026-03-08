@@ -86,6 +86,12 @@ If we anticipate parallel calls to `ensureDraftWorkspace`, draft creation should
 transaction and/or a persistence constraint strategy. If such protection requires an ADR or schema
 constraint, it must be recorded explicitly before being introduced.
 
+Deferment note (2026-03-08):
+
+Concurrency hardening (e.g., DB constraint + conflict readback strategy) is intentionally deferred
+to a post-M1 strengthening ticket and is not required for M1-05 closure. M1-06 must explicitly
+record this deferment in the milestone proof artifact.
+
 ---
 
 ## Verification Notes

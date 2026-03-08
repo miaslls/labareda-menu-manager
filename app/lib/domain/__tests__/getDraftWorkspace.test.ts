@@ -5,19 +5,23 @@ import { UnsupportedAudienceError } from '../errors/UnsupportedAudienceError';
 import { DraftInvariantViolationError } from '../menu-version/DraftInvariantViolationError';
 import { getDraftWorkspace } from '../menu-version/getDraftWorkspace';
 import { MENU_VERSION_STATUS } from '../menu-version/MenuVersionStatus';
-import { MenuVersionRepository } from '../menu-version/repositories/MenuVersionRepository';
 
 import type { MenuVersion } from '../menu-version/MenuVersion';
+import type { MenuVersionRepository } from '../menu-version/repositories/MenuVersionRepository';
 
 class FakeMenuVersionRepository implements MenuVersionRepository {
   private readonly versions: MenuVersion[];
 
   constructor(versions: MenuVersion[]) {
-    this.versions = versions;
+    this.versions = versions.map((version) => ({ ...version }));
   }
 
   async listAll(): Promise<MenuVersion[]> {
-    return this.versions;
+    return this.versions.map((version) => ({ ...version }));
+  }
+
+  async createDraft(): Promise<MenuVersion> {
+    throw new Error('Not needed in getDraftWorkspace tests.');
   }
 }
 

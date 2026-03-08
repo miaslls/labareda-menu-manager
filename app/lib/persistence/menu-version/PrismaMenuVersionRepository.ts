@@ -1,4 +1,5 @@
 import { mapPrismaStatusToDomain } from './mapStatus';
+import { MenuVersionStatus } from '@/generated/prisma/enums';
 import { db } from '@lib/db';
 
 import type { MenuVersion } from '@domain/menu-version/MenuVersion';
@@ -12,5 +13,14 @@ export class PrismaMenuVersionRepository implements MenuVersionRepository {
       id: record.id,
       status: mapPrismaStatusToDomain(record.status),
     }));
+  }
+
+  async createDraft(): Promise<MenuVersion> {
+    const record = await db.menuVersion.create({ data: { status: MenuVersionStatus.DRAFT } });
+
+    return {
+      id: record.id,
+      status: mapPrismaStatusToDomain(record.status),
+    };
   }
 }
