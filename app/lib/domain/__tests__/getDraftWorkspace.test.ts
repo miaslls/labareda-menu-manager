@@ -1,13 +1,13 @@
 import { describe, expect, test } from 'vitest';
 
-import { AUDIENCE } from '../Audience';
-import { UnsupportedAudienceError } from '../errors/UnsupportedAudienceError';
-import { DraftInvariantViolationError } from '../menu-version/DraftInvariantViolationError';
-import { getDraftWorkspace } from '../menu-version/getDraftWorkspace';
-import { MENU_VERSION_STATUS } from '../menu-version/MenuVersionStatus';
+import { AUDIENCE } from '@domain/Audience';
+import { UnsupportedAudienceError } from '@domain/errors/UnsupportedAudienceError';
+import { DraftInvariantViolationError } from '@domain/menu-version/DraftInvariantViolationError';
+import { getDraftWorkspace } from '@domain/menu-version/getDraftWorkspace';
+import { MENU_VERSION_STATUS } from '@domain/menu-version/MenuVersionStatus';
 
-import type { MenuVersion } from '../menu-version/MenuVersion';
-import type { MenuVersionRepository } from '../menu-version/repositories/MenuVersionRepository';
+import type { MenuVersion } from '@domain/menu-version/MenuVersion';
+import type { MenuVersionRepository } from '@domain/menu-version/repositories/MenuVersionRepository';
 
 class FakeMenuVersionRepository implements MenuVersionRepository {
   private readonly versions: MenuVersion[];
