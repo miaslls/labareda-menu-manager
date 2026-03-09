@@ -7,7 +7,7 @@ This file records architectural decisions that introduce constraints or long-ter
 
 ---
 
-# How to Use This File
+## How to Use This File
 
 A decision must be recorded when:
 
@@ -25,7 +25,7 @@ All PRs that introduce or rely on an ADR must link to it.
 
 ---
 
-# ADR Index
+## ADR Index
 
 | ADR     | Title                                                   | Status   | Date       | Supersedes |
 | ------- | ------------------------------------------------------- | -------- | ---------- | ---------- |
@@ -37,10 +37,11 @@ All PRs that introduce or rely on an ADR must link to it.
 | ADR-006 | Minimal authentication boundary in first viable version | Accepted | 2026-02-11 | —          |
 | ADR-007 | Architecture Stability and Change Control Policy        | Accepted | 2026-02-11 | —          |
 | ADR-008 | Domain error taxonomy and invariant failure model       | Accepted | 2026-02-24 | —          |
+| ADR-009 | Concurrency-safe DRAFT bootstrap enforcement model      | Accepted | 2026-03-09 | —          |
 
 ---
 
-# ADR Template
+## ADR Template
 
 Use this template for new ADRs.
 
@@ -91,9 +92,9 @@ Concrete work that must occur as a result.
 
 ---
 
-# ADR-001 — Workspace publishing model (MenuVersion B1)
+## ADR-001 — Workspace publishing model (MenuVersion B1)
 
-Status: Accepted Date: 2026-02-11 Supersedes: —
+> Status: Accepted Date: 2026-02-11 Supersedes: —
 
 ### Decision
 
@@ -131,9 +132,9 @@ pointer flip, not a complex versioning system.
 
 ---
 
-# ADR-002 — Audience-based domain reads
+## ADR-002 — Audience-based domain reads
 
-Status: Accepted Date: 2026-02-11 Supersedes: —
+> Status: Accepted Date: 2026-02-11 Supersedes: —
 
 ### Decision
 
@@ -167,9 +168,9 @@ Audience-based reads keep filtering logic centralized and predictable.
 
 ---
 
-# ADR-003 — Ordering model for categories and items
+## ADR-003 — Ordering model for categories and items
 
-Status: Accepted Date: 2026-02-11 Supersedes: —
+> Status: Accepted Date: 2026-02-11 Supersedes: —
 
 ### Decision
 
@@ -204,9 +205,9 @@ Neighbor swaps preserve uniqueness without temporary collisions and remain easy 
 
 ---
 
-# ADR-004 — Money representation (priceCents)
+## ADR-004 — Money representation (priceCents)
 
-Status: Accepted Date: 2026-02-11 Supersedes: —
+> Status: Accepted Date: 2026-02-11 Supersedes: —
 
 ### Decision
 
@@ -237,9 +238,9 @@ Integer cents provide correct arithmetic and predictable persistence.
 
 ---
 
-# ADR-005 — Item removal is visibility-based
+## ADR-005 — Item removal is visibility-based
 
-Status: Accepted Date: 2026-02-11 Supersedes: —
+> Status: Accepted Date: 2026-02-11 Supersedes: —
 
 ### Decision
 
@@ -273,9 +274,9 @@ Visibility-based hide provides the needed behavior with minimal additional conce
 
 ---
 
-# ADR-006 — Minimal authentication boundary in first viable version
+## ADR-006 — Minimal authentication boundary in first viable version
 
-Status: Accepted Date: 2026-02-11 Supersedes: —
+> Status: Accepted Date: 2026-02-11 Supersedes: —
 
 ### Decision
 
@@ -310,9 +311,9 @@ Minimal authentication provides practical protection without expanding into acco
 
 ---
 
-# ADR-007 — Architecture Stability and Change Control Policy
+## ADR-007 — Architecture Stability and Change Control Policy
 
-Status: Accepted Date: 2026-02-11 Supersedes: —
+> Status: Accepted Date: 2026-02-11 Supersedes: —
 
 ### Decision
 
@@ -349,9 +350,9 @@ reviewable, and historically traceable.
 
 ---
 
-# ADR-008 — Domain error taxonomy and invariant failure model
+## ADR-008 — Domain error taxonomy and invariant failure model
 
-Status: Accepted Date: 2026-02-24 Supersedes: —
+> Status: Accepted Date: 2026-02-24 Supersedes: —
 
 ### Decision
 
@@ -413,6 +414,67 @@ repairing it.
 
 ### Follow-ups
 
-- [ ] Implement DomainError base class
-- [ ] Implement DraftInvariantViolationError
-- [ ] Add deterministic tests for invariant failure modes
+- [x] Implement DomainError base class
+- [x] Implement DraftInvariantViolationError
+- [x] Add deterministic tests for invariant failure modes
+
+---
+
+# ADR-009 — Concurrency-safe DRAFT bootstrap enforcement model
+
+Status: Accepted Date: 2026-03-09 Supersedes: —
+
+### Decision
+
+For bootstrap creation of the `DRAFT` workspace, use a hybrid enforcement model:
+
+- database-level guardrail: partial unique index for `MenuVersion.status = DRAFT`
+- repository-level reconciliation: on unique conflict, read and return the singleton DRAFT
+- domain-level invariant posture unchanged: non-empty corruption still fails loudly
+
+### Context
+
+M1-05 introduces `ensureDraftWorkspace()` so an empty database can create the initial DRAFT.
+Sequential idempotency is not sufficient under parallel callers: race conditions can produce
+duplicate creation attempts.
+
+The system needs:
+
+- hard protection against duplicate DRAFT rows
+- deterministic caller behavior under contention
+- no silent repair for truly corrupted non-empty states
+
+### Options Considered
+
+- Application-only concurrency handling (transactions/retries, no DB uniqueness constraint)
+- DB-only protection (partial unique index, no application conflict reconciliation)
+- Hybrid model (partial unique index plus conflict readback behavior)
+
+### Criteria
+
+- Invariant safety at storage layer
+- Deterministic behavior for parallel callers
+- Simplicity relative to milestone scope
+- Clear future portability implications
+
+### Outcome
+
+Hybrid model selected.
+
+It provides storage-authoritative protection against duplicate drafts while allowing concurrent
+callers to converge idempotently on the same singleton result instead of surfacing avoidable
+transient failures.
+
+### Consequences
+
+- Requires a migration with a SQLite partial unique index on DRAFT status.
+- `MenuVersionRepository.createDraft()` contract is strengthened to be concurrency-idempotent during
+  empty-db bootstrap.
+- Non-constraint failures are still surfaced; only create-conflict path is reconciled.
+- Future DB engine migration must map this invariant to equivalent constraint semantics.
+
+### Follow-ups
+
+- [ ] Add migration for SQLite partial unique index on DRAFT status
+- [ ] Implement repository conflict readback logic in `createDraft()`
+- [ ] Add integration tests for parallel bootstrap and conflict convergence

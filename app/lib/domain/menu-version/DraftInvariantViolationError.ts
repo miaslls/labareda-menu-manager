@@ -1,4 +1,4 @@
-import { DomainError } from '../errors/DomainError';
+import { DomainError } from '@domain/errors/DomainError';
 
 type DraftInvariantViolationMeta = {
   draftCount: number;

@@ -1,6 +1,6 @@
-import { DomainError } from './DomainError';
+import { DomainError } from '@domain/errors/DomainError';
 
-import type { Audience } from '../Audience';
+import type { Audience } from '@domain/Audience';
 
 type UnsupportedAudienceMeta = {
   audience: Audience;

@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest';
 
-import { DomainError } from '../errors/DomainError';
-import { DraftInvariantViolationError } from '../menu-version/DraftInvariantViolationError';
+import { DomainError } from '@domain/errors/DomainError';
+import { DraftInvariantViolationError } from '@domain/menu-version/DraftInvariantViolationError';
 
 describe('domain error taxonomy', () => {
   test('DomainError carries code and meta', () => {
