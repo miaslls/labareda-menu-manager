@@ -92,6 +92,50 @@ Concurrency hardening (e.g., DB constraint + conflict readback strategy) is inte
 to a post-M1 strengthening ticket and is not required for M1-05 closure. M1-06 must explicitly
 record this deferment in the milestone proof artifact.
 
+Post-M1 decision note (2026-03-09):
+
+The follow-up approach is now approved and documented in `ADR-009` in `DECISIONS.md`. Execution
+details are captured below so implementation planning stays in the milestone issue taxonomy.
+
+## Concurrency Hardening Execution Details (Post-M1)
+
+Goal:
+
+- preserve exactly one `DRAFT` under parallel bootstrap calls
+- keep non-empty corruption paths fail-loud
+- make parallel bootstrap deterministic for callers
+
+Chosen strategy (hybrid):
+
+- add database-level protection with a SQLite partial unique index on DRAFT status
+- add application-level reconciliation in repository `createDraft()` on unique conflict
+- preserve strict domain invariant enforcement for corrupted non-empty states
+
+Implementation changes:
+
+- Persistence constraint:
+  - migration adds named partial unique index on `"MenuVersion"("status")`
+  - condition: `"status" = 'DRAFT'`
+- Repository behavior (`createDraft`):
+  - attempt to create DRAFT
+  - on unique conflict, read back DRAFT rows
+  - if exactly one DRAFT exists, return it
+  - if zero or multiple DRAFT exist, throw `DraftInvariantViolationError`
+  - rethrow non-constraint failures
+- Domain behavior (`ensureDraftWorkspace`):
+  - keep current invariant-first behavior
+  - when repository is empty, call `createDraft()`
+  - if repository is non-empty, continue fail-loud checks via invariant enforcement
+
+Verification additions:
+
+- parallel `ensureDraftWorkspace()` calls from empty DB converge to one shared DRAFT
+- parallel `createDraft()` calls do not create duplicates
+- corruption behavior remains fail-loud
+- full check remains:
+  - `npm run test`
+  - `npm run check`
+
 ---
 
 ## Verification Notes

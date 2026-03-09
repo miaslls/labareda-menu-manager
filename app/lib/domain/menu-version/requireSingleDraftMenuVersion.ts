@@ -1,7 +1,7 @@
-import { DraftInvariantViolationError } from './DraftInvariantViolationError';
-import { MENU_VERSION_STATUS } from './MenuVersionStatus';
+import { DraftInvariantViolationError } from '@domain/menu-version/DraftInvariantViolationError';
+import { MENU_VERSION_STATUS } from '@domain/menu-version/MenuVersionStatus';
 
-import type { MenuVersion } from './MenuVersion';
+import type { MenuVersion } from '@domain/menu-version/MenuVersion';
 
 export function requireSingleDraftMenuVersion(versions: MenuVersion[]): MenuVersion {
   const drafts = versions.filter((version) => version.status === MENU_VERSION_STATUS.DRAFT);
