@@ -7,7 +7,7 @@ This file records architectural decisions that introduce constraints or long-ter
 
 ---
 
-# How to Use This File
+## How to Use This File
 
 A decision must be recorded when:
 
@@ -25,7 +25,7 @@ All PRs that introduce or rely on an ADR must link to it.
 
 ---
 
-# ADR Index
+## ADR Index
 
 | ADR     | Title                                                   | Status   | Date       | Supersedes |
 | ------- | ------------------------------------------------------- | -------- | ---------- | ---------- |
@@ -41,7 +41,7 @@ All PRs that introduce or rely on an ADR must link to it.
 
 ---
 
-# ADR Template
+## ADR Template
 
 Use this template for new ADRs.
 
@@ -92,9 +92,9 @@ Concrete work that must occur as a result.
 
 ---
 
-# ADR-001 — Workspace publishing model (MenuVersion B1)
+## ADR-001 — Workspace publishing model (MenuVersion B1)
 
-Status: Accepted Date: 2026-02-11 Supersedes: —
+> Status: Accepted Date: 2026-02-11 Supersedes: —
 
 ### Decision
 
@@ -132,9 +132,9 @@ pointer flip, not a complex versioning system.
 
 ---
 
-# ADR-002 — Audience-based domain reads
+## ADR-002 — Audience-based domain reads
 
-Status: Accepted Date: 2026-02-11 Supersedes: —
+> Status: Accepted Date: 2026-02-11 Supersedes: —
 
 ### Decision
 
@@ -168,9 +168,9 @@ Audience-based reads keep filtering logic centralized and predictable.
 
 ---
 
-# ADR-003 — Ordering model for categories and items
+## ADR-003 — Ordering model for categories and items
 
-Status: Accepted Date: 2026-02-11 Supersedes: —
+> Status: Accepted Date: 2026-02-11 Supersedes: —
 
 ### Decision
 
@@ -205,9 +205,9 @@ Neighbor swaps preserve uniqueness without temporary collisions and remain easy 
 
 ---
 
-# ADR-004 — Money representation (priceCents)
+## ADR-004 — Money representation (priceCents)
 
-Status: Accepted Date: 2026-02-11 Supersedes: —
+> Status: Accepted Date: 2026-02-11 Supersedes: —
 
 ### Decision
 
@@ -238,9 +238,9 @@ Integer cents provide correct arithmetic and predictable persistence.
 
 ---
 
-# ADR-005 — Item removal is visibility-based
+## ADR-005 — Item removal is visibility-based
 
-Status: Accepted Date: 2026-02-11 Supersedes: —
+> Status: Accepted Date: 2026-02-11 Supersedes: —
 
 ### Decision
 
@@ -274,9 +274,9 @@ Visibility-based hide provides the needed behavior with minimal additional conce
 
 ---
 
-# ADR-006 — Minimal authentication boundary in first viable version
+## ADR-006 — Minimal authentication boundary in first viable version
 
-Status: Accepted Date: 2026-02-11 Supersedes: —
+> Status: Accepted Date: 2026-02-11 Supersedes: —
 
 ### Decision
 
@@ -311,9 +311,9 @@ Minimal authentication provides practical protection without expanding into acco
 
 ---
 
-# ADR-007 — Architecture Stability and Change Control Policy
+## ADR-007 — Architecture Stability and Change Control Policy
 
-Status: Accepted Date: 2026-02-11 Supersedes: —
+> Status: Accepted Date: 2026-02-11 Supersedes: —
 
 ### Decision
 
@@ -350,9 +350,9 @@ reviewable, and historically traceable.
 
 ---
 
-# ADR-008 — Domain error taxonomy and invariant failure model
+## ADR-008 — Domain error taxonomy and invariant failure model
 
-Status: Accepted Date: 2026-02-24 Supersedes: —
+> Status: Accepted Date: 2026-02-24 Supersedes: —
 
 ### Decision
 

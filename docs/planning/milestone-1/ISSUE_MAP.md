@@ -66,11 +66,9 @@ Purpose: Reduce cognitive overhead by making file locations predictable.
 
 ## M1-01 — Introduce MenuVersion Schema
 
-Type: Feature  
-Area: schema
+Type: Feature Area: schema
 
-Problem  
-The system currently has no MenuVersion model.
+Problem The system currently has no MenuVersion model.
 
 Scope
 
@@ -107,11 +105,9 @@ Out of Scope
 
 ## M1-02 — Introduce Domain Model for MenuVersion
 
-Type: Feature  
-Area: lib
+Type: Feature Area: lib
 
-Problem  
-Persistence exists but domain layer does not model MenuVersion.
+Problem Persistence exists but domain layer does not model MenuVersion.
 
 Scope
 
@@ -156,12 +152,10 @@ Out of Scope
 
 ## M1-02.5 — Introduce Testing Harness (Vitest)
 
-Type: Governance  
-Area: tooling
+Type: Governance Area: tooling
 
-Problem  
-Milestone 1 will introduce domain invariants. We need a deterministic, fast feedback loop before
-implementing invariant logic.
+Problem Milestone 1 will introduce domain invariants. We need a deterministic, fast feedback loop
+before implementing invariant logic.
 
 Scope
 
@@ -200,11 +194,9 @@ Out of Scope
 
 ## M1-03 — Enforce Single DRAFT Invariant
 
-Type: Feature  
-Area: lib
+Type: Feature Area: lib
 
-Problem  
-Milestone requires exactly one DRAFT at all times.
+Problem Milestone requires exactly one DRAFT at all times.
 
 Scope
 
@@ -245,11 +237,9 @@ Out of Scope
 
 ## M1-04 — Implement Audience-Based Draft Read
 
-Type: Feature  
-Area: lib
+Type: Feature Area: lib
 
-Problem  
-Milestone requires domain-level retrieval of draft workspace via audience-aware read.
+Problem Milestone requires domain-level retrieval of draft workspace via audience-aware read.
 
 Scope
 
@@ -283,11 +273,9 @@ Out of Scope
 
 ## M1-05 — Seed Initial Draft if None Exists
 
-Type: Feature  
-Area: lib + schema
+Type: Feature Area: lib + schema
 
-Problem  
-System must guarantee at least one DRAFT exists.
+Problem System must guarantee at least one DRAFT exists.
 
 Scope
 
@@ -327,11 +315,9 @@ Out of Scope
 
 ## M1-06 — Integration Verification Slice
 
-Type: Documentation / Verification  
-Area: governance
+Type: Documentation / Verification Area: governance
 
-Problem  
-Milestone closure requires demonstrable proof.
+Problem Milestone closure requires demonstrable proof.
 
 Scope
 
