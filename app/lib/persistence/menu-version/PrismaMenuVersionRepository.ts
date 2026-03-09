@@ -1,5 +1,5 @@
-import { mapPrismaStatusToDomain } from './mapStatus';
 import { MenuVersionStatus } from '@/generated/prisma/enums';
+import { mapPrismaStatusToDomain } from '@persistence/menu-version/mapStatus';
 import { db } from '@lib/db';
 
 import type { MenuVersion } from '@domain/menu-version/MenuVersion';

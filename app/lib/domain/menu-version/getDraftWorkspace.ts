@@ -1,9 +1,9 @@
-import { requireSingleDraftMenuVersion } from './requireSingleDraftMenuVersion';
-import { type Audience, AUDIENCE } from '../Audience';
-import { UnsupportedAudienceError } from '../errors/UnsupportedAudienceError';
+import { type Audience, AUDIENCE } from '@domain/Audience';
+import { UnsupportedAudienceError } from '@domain/errors/UnsupportedAudienceError';
+import { requireSingleDraftMenuVersion } from '@domain/menu-version/requireSingleDraftMenuVersion';
 
-import type { MenuVersion } from './MenuVersion';
-import type { MenuVersionRepository } from './repositories/MenuVersionRepository';
+import type { MenuVersion } from '@domain/menu-version/MenuVersion';
+import type { MenuVersionRepository } from '@domain/menu-version/repositories/MenuVersionRepository';
 
 export async function getDraftWorkspace(
   audience: Audience,

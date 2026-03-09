@@ -1,11 +1,11 @@
 import { describe, expect, test } from 'vitest';
 
-import { DraftInvariantViolationError } from '../menu-version/DraftInvariantViolationError';
-import { ensureDraftWorkspace } from '../menu-version/ensureDraftWorkspace';
-import { MENU_VERSION_STATUS } from '../menu-version/MenuVersionStatus';
+import { DraftInvariantViolationError } from '@domain/menu-version/DraftInvariantViolationError';
+import { ensureDraftWorkspace } from '@domain/menu-version/ensureDraftWorkspace';
+import { MENU_VERSION_STATUS } from '@domain/menu-version/MenuVersionStatus';
 
-import type { MenuVersion } from '../menu-version/MenuVersion';
-import type { MenuVersionRepository } from '../menu-version/repositories/MenuVersionRepository';
+import type { MenuVersion } from '@domain/menu-version/MenuVersion';
+import type { MenuVersionRepository } from '@domain/menu-version/repositories/MenuVersionRepository';
 
 class FakeMenuVersionRepository implements MenuVersionRepository {
   private readonly versions: MenuVersion[];
