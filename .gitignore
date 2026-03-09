@@ -48,3 +48,6 @@ prisma/*.db-shm
 
 # IDE
 .vscode/
+
+# temporary files
+.temp/
