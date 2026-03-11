@@ -49,5 +49,9 @@ prisma/*.db-shm
 # IDE
 .vscode/
 
+# Local AI agent configuration
+AGENTS.md
+.agents/
+
 # temporary files
 .temp/
