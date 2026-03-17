@@ -9,6 +9,7 @@ build/
 # Build outputs
 dist/
 coverage/
+generated/
 
 # Tooling caches
 .turbo/
