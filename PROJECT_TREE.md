@@ -1,4 +1,4 @@
-# Project Tree
+## Project Tree
 
 ```text
 .
@@ -7,24 +7,36 @@
 |   |   |-- decision.md
 |   |   |-- issue.md
 |   |   `-- spike.md
+|   |-- workflows
+|   |   `-- ci.yml
 |   |-- dependabot.yml
 |   `-- pull_request_template.md
+|-- .husky
+|   `-- pre-commit
 |-- app
 |   |-- lib
 |   |   |-- domain
 |   |   |   |-- __tests__
 |   |   |   |   |-- domain-error-taxonomy.test.ts
+|   |   |   |   |-- ensureDraftWorkspace.test.ts
+|   |   |   |   |-- getDraftWorkspace.test.ts
 |   |   |   |   |-- requireSingleDraftMenuVersion.test.ts
 |   |   |   |   `-- vitest-harness.test.ts
 |   |   |   |-- errors
-|   |   |   |   `-- DomainError.ts
-|   |   |   `-- menu-version
-|   |   |       |-- repositories
-|   |   |       |   `-- MenuVersionRepository.ts
-|   |   |       |-- DraftInvariantViolationError.ts
-|   |   |       |-- MenuVersion.ts
-|   |   |       |-- MenuVersionStatus.ts
-|   |   |       `-- requireSingleDraftMenuVersion.ts
+|   |   |   |   |-- DomainError.ts
+|   |   |   |   `-- UnsupportedAudienceError.ts
+|   |   |   |-- menu-version
+|   |   |   |   |-- repositories
+|   |   |   |   |   `-- MenuVersionRepository.ts
+|   |   |   |   |-- DraftInvariantViolationError.ts
+|   |   |   |   |-- ensureDraftWorkspace.ts
+|   |   |   |   |-- getDraftWorkspace.ts
+|   |   |   |   |-- MenuVersion.ts
+|   |   |   |   |-- MenuVersionStatus.ts
+|   |   |   |   `-- requireSingleDraftMenuVersion.ts
+|   |   |   `-- Audience.ts
+|   |   |-- errors
+|   |   |   `-- NotImplementedError.ts
 |   |   |-- persistence
 |   |   |   `-- menu-version
 |   |   |       |-- mapStatus.ts
@@ -55,8 +67,8 @@
 |       |-- milestone-1
 |       |   |-- issues
 |       |   |   |-- M1-01-introduce-menuversion-schema.md
-|       |   |   |-- M1-02.5-introduce-vitest-domain-testing-harness.md
 |       |   |   |-- M1-02-introduce-menuversion-domain-model-and-repository-boundary.md
+|       |   |   |-- M1-02.5-introduce-vitest-domain-testing-harness.md
 |       |   |   |-- M1-03-enforce-single-draft-invariant.md
 |       |   |   |-- M1-04-implement-audience-based-draft-workspace-read.md
 |       |   |   |-- M1-05-ensure-initial-draft-workspace-exists-idempotently.md
@@ -79,6 +91,7 @@
 |-- scripts
 |   |-- create_issues.sh
 |   |-- create_milestones.sh
+|   |-- proof-m1.integration.test.ts
 |   `-- README.md
 |-- .env.example
 |-- .gitignore
@@ -90,18 +103,22 @@
 |-- eslint.config.mjs
 |-- MILESTONES.md
 |-- next.config.ts
-|-- package.json
 |-- package-lock.json
+|-- package.json
 |-- prisma.config.ts
 |-- PROJECT_TREE.md
 |-- README.md
 |-- ROADMAP.md
 |-- SCOPE.md
 |-- tsconfig.json
-`-- vitest.config.ts
+|-- vitest.config.ts
+`-- vitest.proof.config.ts
 ```
 
 ## Summary
 
-- **Total Files:** 70
-- **Total Folders:** 27
+- **Total Files**: 81
+- **Total Directories**: 30
+- **Exclusion Source**: `.gitignore`
+- **Excluded Highlights**: `.git`, `node_modules`, `.next`, `.temp`, `.agents`, `.vscode`,
+  `coverage`, `out`, `build`, `generated`

@@ -7,10 +7,10 @@ set -euo pipefail
 # Infers labels from [Type] prefix and keywords in title.
 #
 # Usage:
-#   ./create_issues.sh --milestone "Milestone 0 — Governance + Technical Skeleton" --dir "docs/planning/milestone-0/issues"
+#   ./create_issues.sh --milestone "Milestone 1 - Draft Workspace Exists" --dir "docs/planning/milestone-1/issues"
 #
 # Or via env vars:
-#   MILESTONE="Milestone 0 — ..." ISSUES_DIR="docs/planning/milestone-0/issues" ./create_issues.sh
+#   MILESTONE="Milestone 1 - ..." ISSUES_DIR="docs/planning/milestone-1/issues" ./create_issues.sh
 #
 # Dry run (default):
 #   DRY_RUN=1 ./create_issues.sh --milestone "..." --dir "..."
@@ -35,8 +35,8 @@ Optional:
   -h, --help
 
 Examples:
-  DRY_RUN=1 ./create_issues.sh --milestone "Phase 1 — Repository Initialization" --dir "docs/planning/phase-1/issues"
-  DRY_RUN=0 ./create_issues.sh --milestone "Milestone 0 — Governance + Technical Skeleton" --dir "docs/planning/milestone-0/issues"
+  DRY_RUN=1 ./create_issues.sh --milestone "Phase 1 - Repository Initialization" --dir "docs/planning/phase-1/issues"
+  DRY_RUN=0 ./create_issues.sh --milestone "Milestone 1 - Draft Workspace Exists" --dir "docs/planning/milestone-1/issues"
 USAGE
 }
 
@@ -226,3 +226,4 @@ for f in "${files[@]}"; do
 done
 
 echo "Done."
+

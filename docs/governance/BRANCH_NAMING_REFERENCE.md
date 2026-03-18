@@ -1,51 +1,34 @@
 # Branch Naming Reference
 
-Status: Active Purpose: Central reference for approved branch names during milestone execution.
+Status: Active. Last reviewed: 2026-03-18. Purpose: Reference conventions and examples for branch
+naming.
 
 ---
 
-# Milestone 0 — Governance + Technical Skeleton
+# Naming Rules
 
-## Issues and Branch Names
+- One branch per issue.
+- Prefix must match issue type (`feature/`, `docs/`, `refactor/`, `decision/`, `spike/`).
+- Keep names short and capability-oriented.
+- Avoid milestone numbers in branch names unless required for disambiguation.
 
-### 1. Initialize Next.js App Router skeleton
+Examples:
 
-```
-feature/app-router-skeleton
-```
-
-### 2. Configure TypeScript and ESLint
-
-```
-feature/typescript-eslint-setup
-```
-
-### 3. Integrate Prisma with SQLite
-
-```
-feature/prisma-sqlite-integration
-```
-
-### 4. Run initial migration pipeline
-
-```
-feature/initial-migration-pipeline
-```
-
-### 5. Finalize README setup instructions
-
-```
-docs/readme-setup-instructions
-```
+- `feature/menuversion-domain-boundary`
+- `feature/single-draft-invariant`
+- `docs/m1-proof-artifact`
+- `governance/prettier-toolchain`
 
 ---
 
-# Branch Naming Rules
+# Historical Example Set (Milestone 0)
 
-- One branch per issue
-- Prefix must match issue type (`feature/`, `docs/`, `refactor/`, `decision/`, `spike/`)
-- No milestone prefixes in branch names
-- Keep names short and capability-oriented
-- Avoid redundant words (e.g., avoid "milestone-0-")
+These examples are retained for traceability of initial execution:
+
+- `feature/app-router-skeleton`
+- `feature/typescript-eslint-setup`
+- `feature/prisma-sqlite-integration`
+- `feature/initial-migration-pipeline`
+- `docs/readme-setup-instructions`
 
 This file exists to prevent naming drift and reduce cognitive overhead during execution.
