@@ -1,11 +1,38 @@
 # Labareda Menu Manager
 
+Last updated: 2026-03-18  
+Current package version: `0.2.0`
+
 Labareda Menu Manager is a single-restaurant menu management system built as a full-stack web
 application using Next.js and Prisma.
 
 The system is intentionally designed and governed as if developed by a small professional
 engineering team. Architectural clarity, explicit invariants, and disciplined workflow are
 first-class concerns.
+
+---
+
+## Current Capability (Implemented)
+
+Milestone 1 is complete.
+
+The system can now reliably:
+
+- bootstrap an initial `DRAFT` `MenuVersion` when the repository is empty
+- enforce the invariant "exactly one `DRAFT` exists" in the domain layer
+- retrieve the draft workspace for `adminEdit` audience deterministically
+- fail loudly on corruption through domain errors (`DRAFT_INVARIANT_VIOLATION`)
+
+Implemented domain operations:
+
+- `ensureDraftWorkspace(repo)`
+- `getDraftWorkspace(audience, repo)`
+- `requireSingleDraftMenuVersion(versions)`
+
+Implemented proof workflow:
+
+- `npm run proof:m1`
+- `scripts/proof-m1.integration.test.ts`
 
 ---
 
@@ -111,7 +138,7 @@ Formatting is performed at the UI boundary.
 
 The system enforces strict layering:
 
-UI → Route Handlers → Domain (`lib/`) → Persistence (Prisma)
+`UI -> Route Handlers -> Domain -> Persistence`
 
 Business rules and invariants exist only in the domain layer.
 
@@ -167,6 +194,8 @@ The repository is reproducible from a clean clone.
 
    ```env
    DATABASE_URL="file:./prisma/dev.db"
+   # Optional for metadata routes (robots/sitemap)
+   NEXT_PUBLIC_SITE_URL="https://drinksnbbq.com.br"
    ```
 
 4. Run database migrations
@@ -201,6 +230,26 @@ If `DATABASE_URL` is missing or incorrect, Prisma and the application will fail 
 
 ---
 
+## Verification Commands
+
+- Full quality gate: `npm run check`
+- Domain tests only: `npm run test`
+- Milestone 1 proof: `npm run db:reset && npm run proof:m1`
+
+---
+
+## Planned but Not Implemented Yet
+
+- Category and item domain models
+- Publish flow (`DRAFT -> PUBLISHED -> new DRAFT`)
+- Public read path
+- Authentication boundary
+- Admin and public UI behavior
+
+These remain in Milestones 2-5.
+
+---
+
 # Non-Goals
 
 - Multi-restaurant support
@@ -216,11 +265,15 @@ Scope changes require explicit architectural decisions.
 
 # Status
 
-- Phase A — Foundation and Governance: Complete
-- Phase B — Repository Initialization: Complete
-- Phase C — Milestone 0: Complete
+- Phase A - Foundation and Governance: Complete
+- Phase B - Repository Initialization: Complete
+- Phase C - Milestone 0: Complete
+- Phase D - Milestone 1: Complete (2026-03-18)
 
 Milestone 0 established the governed repository baseline, deterministic Prisma + SQLite toolchain,
 verified migration pipeline, and fully reproducible clean-clone setup.
 
-The project is ready to proceed to Milestone 1 — Draft Workspace Exists.
+Milestone 1 added domain-level draft bootstrap and deterministic draft retrieval with explicit
+invariant enforcement.
+
+Current focus is Milestone 2 - Categories Ordered Within Draft.

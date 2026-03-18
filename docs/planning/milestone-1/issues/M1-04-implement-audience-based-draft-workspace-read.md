@@ -31,15 +31,15 @@ This issue wires the repository + invariant enforcement into an explicit domain 
 
 ## Success Criteria
 
-- [ ] Audience type exists/confirmed in domain (`public`, `adminPreview`, `adminEdit`)
-- [ ] Domain operation implemented: `getDraftWorkspace(audience)`
-- [ ] For `adminEdit`, operation:
+- [x] Audience type exists/confirmed in domain (`public`, `adminPreview`, `adminEdit`)
+- [x] Domain operation implemented: `getDraftWorkspace(audience)`
+- [x] For `adminEdit`, operation:
   - fetches MenuVersions via repository abstraction
   - applies single-DRAFT invariant enforcement
   - returns the DRAFT deterministically
-- [ ] Domain API requires explicit audience argument (no implicit defaults)
-- [ ] No Prisma types leak into domain
-- [ ] Unit tests exist proving `adminEdit` returns the DRAFT workspace (DB-free)
+- [x] Domain API requires explicit audience argument (no implicit defaults)
+- [x] No Prisma types leak into domain
+- [x] Unit tests exist proving `adminEdit` returns the DRAFT workspace (DB-free)
 
 ---
 

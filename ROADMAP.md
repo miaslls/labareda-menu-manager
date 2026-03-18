@@ -1,6 +1,6 @@
 # Roadmap
 
-Status: Active execution phase.
+Status: Active execution phase. Last reviewed: 2026-03-18.
 
 This document defines the ordered progression of capability delivery. It translates milestone
 definitions into execution sequence and current focus.
@@ -29,7 +29,7 @@ Milestones define capability boundaries. This roadmap defines progression and ex
 
 # Execution Sequence
 
-## Phase 0 — Foundation Freeze (Complete)
+## Phase 0 - Foundation Freeze (Complete)
 
 Completed during planning phase prior to repository creation.
 
@@ -42,7 +42,7 @@ Includes:
 
 ---
 
-## Phase 1 — Repository Initialization (Complete)
+## Phase 1 - Repository Initialization (Complete)
 
 Objective: Create the repository and establish governance infrastructure.
 
@@ -62,7 +62,7 @@ Exit Criteria (Satisfied):
 
 ---
 
-## Milestone 0 — Governance + Technical Skeleton (Complete)
+## Milestone 0 - Governance + Technical Skeleton (Complete)
 
 Objective: Establish working technical foundation.
 
@@ -84,7 +84,7 @@ Deliverable (Satisfied):
 
 ---
 
-## Milestone 1 — Draft Workspace Exists
+## Milestone 1 - Draft Workspace Exists (Complete on 2026-03-18)
 
 Objective: Introduce MenuVersion workspace model.
 
@@ -93,14 +93,17 @@ Focus Areas:
 - Schema for MenuVersion
 - Ensure single DRAFT invariant
 - Domain read for draft workspace
+- Deterministic empty-db bootstrap via `ensureDraftWorkspace`
 
-Deliverable:
+Deliverable (Satisfied):
 
 - Draft workspace retrievable via domain layer
+- Proof artifact available at
+  `docs/planning/milestone-1/issues/M1-06-integration-verification-and-milestone-1-proof.md`
 
 ---
 
-## Milestone 2 — Categories in Draft
+## Milestone 2 - Categories in Draft
 
 Objective: Enable category management with strict ordering.
 
@@ -116,7 +119,7 @@ Deliverable:
 
 ---
 
-## Milestone 3 — Items in Draft
+## Milestone 3 - Items in Draft
 
 Objective: Enable item management within categories.
 
@@ -133,7 +136,7 @@ Deliverable:
 
 ---
 
-## Milestone 4 — Publish + Public Read
+## Milestone 4 - Publish + Public Read
 
 Objective: Enable safe publish and public consumption.
 
@@ -150,7 +153,7 @@ Deliverable:
 
 ---
 
-## Milestone 5 — Authentication
+## Milestone 5 - Authentication
 
 Objective: Protect administrative surfaces.
 
@@ -168,13 +171,13 @@ Deliverable:
 
 # Current Focus
 
-Current Milestone: Milestone 1 — Draft Workspace Exists
+Current Milestone: Milestone 2 - Categories in Draft
 
 Next Action:
 
-- Define MenuVersion schema
-- Introduce domain invariant: exactly one DRAFT
-- Implement audience-based draft read
+- Define Category schema linked to MenuVersion
+- Introduce Category repository contract at domain boundary
+- Implement domain ordering invariant (0-based, contiguous, unique)
 
 ---
 

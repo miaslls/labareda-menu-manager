@@ -31,16 +31,16 @@ This is the system’s first “bootstrap” behavior.
 
 ## Success Criteria
 
-- [ ] Domain operation implemented: `ensureDraftWorkspace()`
-- [ ] Behavior:
+- [x] Domain operation implemented: `ensureDraftWorkspace()`
+- [x] Behavior:
   - if exactly one DRAFT exists → return it (no write)
   - if zero MenuVersions exist → create one DRAFT and return it
   - if zero DRAFT exists but other versions exist → fail loudly (invariant violation)
   - if multiple DRAFT exist → fail loudly (invariant violation)
-- [ ] Repository contract extended with minimal write capability (create DRAFT)
-- [ ] Prisma-backed repository adapter implements the write method
-- [ ] Idempotency proven via deterministic tests
-- [ ] (If needed) creation uses a transaction to avoid duplicate drafts under concurrency
+- [x] Repository contract extended with minimal write capability (create DRAFT)
+- [x] Prisma-backed repository adapter implements the write method
+- [x] Idempotency proven via deterministic tests
+- [x] (If needed) creation uses a transaction to avoid duplicate drafts under concurrency
 
 ---
 

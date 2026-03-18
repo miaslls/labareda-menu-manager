@@ -9,11 +9,48 @@ behavior changes in a way that affects users or contributors.
 
 ## Unreleased
 
-(No changes yet. Milestone 1 work will appear here.)
+- No unreleased changes yet after `0.2.0`.
 
 ---
 
-## 0.1.0 — Milestone 0 Complete
+## 0.2.0 - Milestone 1 Complete (2026-03-18)
+
+Milestone 1 closure documentation and implementation alignment updates.
+
+### Added
+
+- `MenuVersion` domain model and repository boundary for Milestone 1
+- Single-DRAFT invariant enforcement in domain:
+  - `requireSingleDraftMenuVersion()`
+  - `DraftInvariantViolationError` (`DRAFT_INVARIANT_VIOLATION`)
+- Audience model and draft read operation:
+  - `getDraftWorkspace(audience, repo)`
+  - `UnsupportedAudienceError` (`UNSUPPORTED_AUDIENCE`)
+- Deterministic draft bootstrap operation:
+  - `ensureDraftWorkspace(repo)`
+- Milestone proof runner:
+  - `npm run proof:m1`
+  - `scripts/proof-m1.integration.test.ts`
+
+### Changed
+
+- Root documentation aligned to implementation status (Milestone 1 complete, Milestone 2 next)
+- Architecture reference clarified to state that domain code must not import Prisma
+
+### Verification State
+
+- `npm run db:reset` proves clean database bootstrap
+- `npm run proof:m1` proves deterministic single-draft behavior
+- `npm run test` passes domain test suite
+- `npm run check` passes full quality gate (`format:check`, `typecheck`, `lint`, `test`, `build`)
+
+### Known Deferrals
+
+- ADR-009 concurrency hardening follow-ups remain intentionally deferred post-M1
+
+---
+
+## 0.1.0 - Milestone 0 Complete (2026-02-15)
 
 Initial governed repository baseline.
 
@@ -32,7 +69,7 @@ workflow enforcement.
 - Next.js App Router skeleton
 - TypeScript configuration
 - ESLint configuration with unified `check` script
-- Prisma 7 configured with SQLite
+- Prisma configured with SQLite
 - Deterministic Prisma client generation
 - Initial migration (smoke test model)
 - Verified migration reset pipeline
@@ -48,5 +85,4 @@ workflow enforcement.
 - Development server runs via `npm run dev`
 - Toolchain health verified via `npm run check`
 
-Milestone 0 formally closes with a fully bootstrappable, governed system ready for domain modeling
-in Milestone 1.
+Milestone 0 formally closes with a fully bootstrappable, governed system ready for domain modeling.

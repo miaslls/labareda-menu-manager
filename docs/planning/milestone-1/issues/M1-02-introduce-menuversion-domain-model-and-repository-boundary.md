@@ -30,13 +30,13 @@ This issue establishes the structural boundary required for invariant enforcemen
 
 ## Success Criteria
 
-- [ ] Domain `MenuVersionStatus` type defined (independent from Prisma enum)
-- [ ] Domain `MenuVersion` entity defined with minimal fields required for Milestone 1
-- [ ] Repository interface defined in domain layer
-- [ ] Prisma-backed repository adapter implemented in persistence layer
-- [ ] Mapping between Prisma record and domain entity isolated to adapter
-- [ ] No Prisma imports exist in domain files
-- [ ] Project compiles with strict TypeScript checks
+- [x] Domain `MenuVersionStatus` type defined (independent from Prisma enum)
+- [x] Domain `MenuVersion` entity defined with minimal fields required for Milestone 1
+- [x] Repository interface defined in domain layer
+- [x] Prisma-backed repository adapter implemented in persistence layer
+- [x] Mapping between Prisma record and domain entity isolated to adapter
+- [x] No Prisma imports exist in domain files
+- [x] Project compiles with strict TypeScript checks
 
 ---
 
