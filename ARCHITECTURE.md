@@ -1,7 +1,7 @@
 # Architecture Reference
 
 > Status: Frozen as of Milestone 0. Changes to this document require an architectural decision
-> recorded in `DECISIONS.md`.
+> recorded in `DECISIONS.md`. Last implementation-alignment review: 2026-03-18.
 
 Labareda Menu Manager Architecture
 
@@ -31,6 +31,29 @@ database.
 
 ---
 
+# 1A. Current Implementation Snapshot
+
+As of 2026-03-18, the implemented slice is Milestone 1 only.
+
+Implemented:
+
+- `MenuVersion` schema and status enum (`DRAFT`, `PUBLISHED`, `REPLACED`)
+- Domain invariant enforcement for single-draft cardinality
+- Domain bootstrap operation (`ensureDraftWorkspace`)
+- Domain read operation (`getDraftWorkspace`) for `adminEdit`
+
+Not yet implemented:
+
+- Category and item domain behavior
+- Publish flow
+- Public read path
+- Authentication boundary
+- Route handlers for menu operations
+
+This section clarifies implementation status only; it does not change architecture policy.
+
+---
+
 # 2. High-Level Architectural Layers
 
 The system follows a strict layered architecture.
@@ -47,9 +70,10 @@ Persistence Layer (Prisma + Database)
 
 Dependency rules:
 
-- UI may depend on Route Handlers and Domain
+- UI may depend on Route Handlers and view-focused domain DTOs only when needed
 - Route Handlers may depend on Domain
-- Domain may depend on Prisma
+- Domain must not depend on Prisma
+- Persistence may depend on Prisma
 - No upward dependencies are allowed
 
 Violations are architectural defects.
@@ -93,7 +117,9 @@ Import constraints:
 
 - `app/` and UI components must not import Prisma.
 - `app/api/**/route.ts` must not import Prisma.
-- Only `lib/` may import Prisma.
+- `app/lib/domain/**` must not import Prisma.
+- Prisma imports are restricted to persistence and DB adapter files (`app/lib/persistence/**` and
+  `app/lib/db.ts`).
 
 This is enforced by convention and review ritual; violations are treated as architectural defects.
 

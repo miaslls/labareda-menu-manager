@@ -1,7 +1,7 @@
 # Milestones
 
 Status: Active. This document defines capability boundaries for the project. Changes to milestone
-structure require architectural review and may require a new ADR.
+structure require architectural review and may require a new ADR. Last reviewed: 2026-03-18.
 
 ---
 
@@ -35,7 +35,7 @@ Granularity rules:
 
 # Milestones (Authoritative Set)
 
-## Milestone 0 — Governance + Technical Skeleton
+## Milestone 0 - Governance + Technical Skeleton (Complete)
 
 Capability unlocked: The project can be cloned, installed, migrated, and run consistently with
 governance in place.
@@ -58,7 +58,7 @@ Explicitly excludes:
 
 ---
 
-## Milestone 1 — Draft Workspace Exists
+## Milestone 1 - Draft Workspace Exists (Complete on 2026-03-18)
 
 Capability unlocked: A draft MenuVersion workspace exists and can be retrieved through the domain
 layer.
@@ -77,9 +77,13 @@ Explicitly excludes:
 - Publish flow
 - Public read
 
+Verification artifact:
+
+- `docs/planning/milestone-1/issues/M1-06-integration-verification-and-milestone-1-proof.md`
+
 ---
 
-## Milestone 2 — Categories Ordered Within Draft
+## Milestone 2 - Categories Ordered Within Draft
 
 Capability unlocked: Categories can be created and ordered within the draft workspace.
 
@@ -98,7 +102,7 @@ Explicitly excludes:
 
 ---
 
-## Milestone 3 — Items Ordered Within Categories
+## Milestone 3 - Items Ordered Within Categories
 
 Capability unlocked: Items can be managed within draft categories with proper invariants.
 
@@ -118,7 +122,7 @@ Explicitly excludes:
 
 ---
 
-## Milestone 4 — Publish and Public Read
+## Milestone 4 - Publish and Public Read
 
 Capability unlocked: The menu can be safely published and consumed publicly.
 
@@ -138,7 +142,7 @@ Explicitly excludes:
 
 ---
 
-## Milestone 5 — Authentication + Admin Protection
+## Milestone 5 - Authentication + Admin Protection
 
 Capability unlocked: Administrative behavior is protected from unauthorized access.
 
