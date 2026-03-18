@@ -21,11 +21,11 @@ behavior.
 
 ## Success Criteria
 
-- [ ] Prisma schema includes `MenuVersion` model
-- [ ] Prisma schema includes `MenuVersionStatus` enum with: `DRAFT`, `PUBLISHED`, `REPLACED`
-- [ ] A migration is generated and applies cleanly
-- [ ] Prisma client generation succeeds
-- [ ] Toolchain verification passes without introducing unexpected tracked artifacts
+- [x] Prisma schema includes `MenuVersion` model
+- [x] Prisma schema includes `MenuVersionStatus` enum with: `DRAFT`, `PUBLISHED`, `REPLACED`
+- [x] A migration is generated and applies cleanly
+- [x] Prisma client generation succeeds
+- [x] Toolchain verification passes without introducing unexpected tracked artifacts
 
 ---
 

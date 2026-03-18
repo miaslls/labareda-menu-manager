@@ -31,18 +31,18 @@ Invariant enforcement belongs in the domain layer, not in Prisma.
 
 ## Success Criteria
 
-- [ ] A domain error type is defined for DRAFT invariant violations
-- [ ] Error includes compact, debuggable metadata (counts and/or ids)
-- [ ] A pure domain function enforces the invariant
-- [ ] Function returns the single DRAFT when valid
-- [ ] Function throws domain error when:
+- [x] A domain error type is defined for DRAFT invariant violations
+- [x] Error includes compact, debuggable metadata (counts and/or ids)
+- [x] A pure domain function enforces the invariant
+- [x] Function returns the single DRAFT when valid
+- [x] Function throws domain error when:
   - zero DRAFT versions exist
   - more than one DRAFT exists
-- [ ] Unit tests cover:
+- [x] Unit tests cover:
   - exactly one DRAFT → success
   - zero DRAFT → failure
   - two+ DRAFT → failure
-- [ ] Tests are DB-free and deterministic
+- [x] Tests are DB-free and deterministic
 
 ---
 
