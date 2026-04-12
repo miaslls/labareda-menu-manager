@@ -1,5 +1,11 @@
-import 'dotenv/config';
-import { defineConfig } from 'prisma/config';
+import { config as dotenvConfig } from 'dotenv';
+import { defineConfig, env } from 'prisma/config';
+
+dotenvConfig({ path: '.env.local' });
+
+if (!process.env.DATABASE_URL_UNPOOLED && process.env.DATABASE_POSTGRES_URL_NON_POOLING) {
+  process.env.DATABASE_URL_UNPOOLED = process.env.DATABASE_POSTGRES_URL_NON_POOLING;
+}
 
 export default defineConfig({
   schema: 'prisma/schema.prisma',
@@ -7,6 +13,6 @@ export default defineConfig({
     path: 'prisma/migrations',
   },
   datasource: {
-    url: process.env['DATABASE_URL'],
+    url: env('DATABASE_URL_UNPOOLED'),
   },
 });
