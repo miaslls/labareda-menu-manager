@@ -57,7 +57,7 @@ Clarity and correctness are prioritized over speed or early generalization.
 
 - Single-restaurant scope (not multi-tenant)
 - Unified frontend and backend (Next.js App Router)
-- Prisma ORM with relational database (SQLite for development)
+- Prisma ORM with Neon Postgres
 - Explicit architectural layering
 - Strict milestone-based capability evolution
 
@@ -188,12 +188,13 @@ The repository is reproducible from a clean clone.
 
 3. Create a local environment file
 
-   Copy `.env.example` to `.env` in the project root.
+   Copy `.env.example` to `.env.local` in the project root.
 
    The default development configuration uses:
 
    ```env
-   DATABASE_URL="file:./prisma/dev.db"
+   DATABASE_URL="postgresql://your-neon-user:your-neon-password@your-project-pooler.region.aws.neon.tech/neondb?channel_binding=require&sslmode=require"
+   DATABASE_URL_UNPOOLED="postgresql://your-neon-user:your-neon-password@your-project.region.aws.neon.tech/neondb?sslmode=require"
    # Optional for metadata routes (robots/sitemap)
    NEXT_PUBLIC_SITE_URL="https://drinksnbbq.com.br"
    ```
@@ -220,13 +221,18 @@ The repository is reproducible from a clean clone.
 
 ## Database Notes
 
-- The local SQLite database file lives at `prisma/dev.db` (gitignored).
+- Local Prisma CLI commands load `.env.local` via `prisma.config.ts`.
+- Runtime Prisma client reads `DATABASE_URL` and validates target alignment against
+  `DATABASE_URL_UNPOOLED`.
+- `DATABASE_URL` should use Neon pooled host; `DATABASE_URL_UNPOOLED` should use non-pooling host.
+- Both URLs must target the same Neon project/branch.
 - Prisma client output is generated into `generated/prisma` (gitignored).
 - The migration pipeline has been verified and documented in:
 
   `docs/planning/milestone-0/issues/M0-04-run-initial-migration-pipeline.md`
 
-If `DATABASE_URL` is missing or incorrect, Prisma and the application will fail fast.
+If DB connection variables are missing, invalid, or mismatched, Prisma and the application fail
+fast.
 
 ---
 
@@ -270,7 +276,7 @@ Scope changes require explicit architectural decisions.
 - Phase C - Milestone 0: Complete
 - Phase D - Milestone 1: Complete (2026-03-18)
 
-Milestone 0 established the governed repository baseline, deterministic Prisma + SQLite toolchain,
+Milestone 0 established the governed repository baseline and deterministic Prisma toolchain,
 verified migration pipeline, and fully reproducible clean-clone setup.
 
 Milestone 1 added domain-level draft bootstrap and deterministic draft retrieval with explicit
