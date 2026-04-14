@@ -1,6 +1,6 @@
 # Labareda Menu Manager
 
-Last updated: 2026-03-18  
+Last updated: 2026-04-14  
 Current package version: `0.2.0`
 
 Labareda Menu Manager is a single-restaurant menu management system built as a full-stack web
