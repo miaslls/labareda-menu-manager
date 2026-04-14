@@ -1,9 +1,11 @@
 import { MenuVersionStatus } from '@/generated/prisma/enums';
 import { mapPrismaStatusToDomain } from '@persistence/menu-version/mapStatus';
-import { db } from '@lib/db';
+import { getPrismaClient } from '@lib/db/prisma-client';
 
 import type { MenuVersion } from '@domain/menu-version/MenuVersion';
 import type { MenuVersionRepository } from '@domain/menu-version/repositories/MenuVersionRepository';
+
+const db = getPrismaClient();
 
 export class PrismaMenuVersionRepository implements MenuVersionRepository {
   async listAll(): Promise<MenuVersion[]> {

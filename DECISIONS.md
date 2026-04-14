@@ -38,6 +38,7 @@ All PRs that introduce or rely on an ADR must link to it.
 | ADR-007 | Architecture Stability and Change Control Policy        | Accepted | 2026-02-11 | —          |
 | ADR-008 | Domain error taxonomy and invariant failure model       | Accepted | 2026-02-24 | —          |
 | ADR-009 | Concurrency-safe DRAFT bootstrap enforcement model      | Accepted | 2026-03-09 | —          |
+| ADR-010 | Prisma-Neon connection target alignment contract        | Accepted | 2026-04-12 | ADR-009\*  |
 
 ---
 
@@ -478,3 +479,54 @@ transient failures.
 - [ ] Add migration for SQLite partial unique index on DRAFT status
 - [ ] Implement repository conflict readback logic in `createDraft()`
 - [ ] Add integration tests for parallel bootstrap and conflict convergence
+
+---
+
+## ADR-010 - Prisma-Neon connection target alignment contract
+
+Status: Accepted Date: 2026-04-12 Supersedes: ADR-009 (partial)
+
+### Decision
+
+Use split Neon connection URLs with explicit alignment enforcement:
+
+- `DATABASE_URL` is the pooled runtime URL.
+- `DATABASE_URL_UNPOOLED` is the unpooled Prisma CLI/migration URL.
+- Startup fails fast when both URLs do not resolve to the same normalized Neon host.
+
+Local development uses `.env.local` as the canonical local env file. Legacy
+`DATABASE_POSTGRES_URL_NON_POOLING` remains a compatibility fallback for unpooled checks.
+
+### Context
+
+After switching migration history to PostgreSQL, runtime and CLI URLs must not drift across Neon
+projects/branches.
+
+Without an alignment guardrail, pooled and unpooled URLs can silently diverge, causing migrations to
+run against one target while runtime uses another.
+
+### Options Considered
+
+- Single URL for runtime and migrations
+- Split URLs without target alignment checks
+- Split URLs with fail-fast target alignment checks
+
+### Criteria
+
+- Preserve Prisma migration reliability on Neon
+- Keep runtime connection behavior explicit
+- Fail loudly on misconfiguration
+- Keep compatibility with existing Vercel-provided variable names
+
+### Outcome
+
+Split URLs with fail-fast alignment checks were selected.
+
+This keeps pooled runtime performance while preserving unpooled migration behavior and preventing
+cross-target drift.
+
+### Consequences
+
+- Configuration now has a hard invariant between pooled and unpooled Neon hosts
+- Local setup documentation must describe `.env.local` and both URL roles
+- Invalid or mismatched DB URL configuration now fails during startup/CLI bootstrap

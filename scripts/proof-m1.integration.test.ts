@@ -6,7 +6,9 @@ import { AUDIENCE } from '@domain/Audience';
 import { ensureDraftWorkspace } from '@domain/menu-version/ensureDraftWorkspace';
 import { getDraftWorkspace } from '@domain/menu-version/getDraftWorkspace';
 import { PrismaMenuVersionRepository } from '@persistence/menu-version/PrismaMenuVersionRepository';
-import { db } from '@lib/db';
+import { getPrismaClient } from '@lib/db/prisma-client';
+
+const db = getPrismaClient();
 
 describe('Milestone 1 proof runner', () => {
   const repo = new PrismaMenuVersionRepository();

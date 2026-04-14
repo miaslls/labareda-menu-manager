@@ -55,3 +55,6 @@ AGENTS.md
 
 # temporary files
 .temp/
+
+.vercel
+.env*.local
