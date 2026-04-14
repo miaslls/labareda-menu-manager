@@ -9,6 +9,9 @@ on:
 jobs:
   quality:
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgresql://ci:ci@localhost:5432/labareda_ci?sslmode=require
+      DATABASE_URL_UNPOOLED: postgresql://ci:ci@localhost:5432/labareda_ci?sslmode=require
 
     steps:
       - name: checkout
@@ -17,7 +20,7 @@ jobs:
       - name: setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: install dependencies
