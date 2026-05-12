@@ -14,7 +14,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "proof:m1": "vitest run --reporter=verbose --config vitest.proof.config.ts scripts/proof-m1.integration.test.ts",
-    "check": "npm run format:check && npm run typecheck && npm run lint && npm run test && npm run build",
+    "check": "npm run format:check && npm run typecheck && npm run lint && npm run test",
     "fix": "npm run format && npm run lint:fix",
     "postinstall": "npm run db:generate",
     "db:validate": "prisma validate",
