@@ -1,6 +1,6 @@
 # Roadmap
 
-Status: Active execution phase. Last reviewed: 2026-03-18.
+Status: Active execution phase. Last reviewed: 2026-04-14.
 
 This document defines the ordered progression of capability delivery. It translates milestone
 definitions into execution sequence and current focus.

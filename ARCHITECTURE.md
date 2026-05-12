@@ -1,7 +1,7 @@
 # Architecture Reference
 
 > Status: Frozen as of Milestone 0. Changes to this document require an architectural decision
-> recorded in `DECISIONS.md`. Last implementation-alignment review: 2026-03-18.
+> recorded in `DECISIONS.md`. Last implementation-alignment review: 2026-04-14.
 
 Labareda Menu Manager Architecture
 
@@ -119,7 +119,7 @@ Import constraints:
 - `app/api/**/route.ts` must not import Prisma.
 - `app/lib/domain/**` must not import Prisma.
 - Prisma imports are restricted to persistence and DB adapter files (`app/lib/persistence/**` and
-  `app/lib/db.ts`).
+  `app/lib/db/prisma-client.ts`).
 
 This is enforced by convention and review ritual; violations are treated as architectural defects.
 

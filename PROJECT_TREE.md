@@ -15,6 +15,8 @@
 |   `-- pre-commit
 |-- app
 |   |-- lib
+|   |   |-- db
+|   |   |   `-- prisma-client.ts
 |   |   |-- domain
 |   |   |   |-- __tests__
 |   |   |   |   |-- domain-error-taxonomy.test.ts
@@ -37,11 +39,10 @@
 |   |   |   `-- Audience.ts
 |   |   |-- errors
 |   |   |   `-- NotImplementedError.ts
-|   |   |-- persistence
-|   |   |   `-- menu-version
-|   |   |       |-- mapStatus.ts
-|   |   |       `-- PrismaMenuVersionRepository.ts
-|   |   `-- db.ts
+|   |   `-- persistence
+|   |       `-- menu-version
+|   |           |-- mapStatus.ts
+|   |           `-- PrismaMenuVersionRepository.ts
 |   |-- globals.css
 |   |-- layout.tsx
 |   |-- page.tsx
@@ -67,8 +68,8 @@
 |       |-- milestone-1
 |       |   |-- issues
 |       |   |   |-- M1-01-introduce-menuversion-schema.md
-|       |   |   |-- M1-02-introduce-menuversion-domain-model-and-repository-boundary.md
 |       |   |   |-- M1-02.5-introduce-vitest-domain-testing-harness.md
+|       |   |   |-- M1-02-introduce-menuversion-domain-model-and-repository-boundary.md
 |       |   |   |-- M1-03-enforce-single-draft-invariant.md
 |       |   |   |-- M1-04-implement-audience-based-draft-workspace-read.md
 |       |   |   |-- M1-05-ensure-initial-draft-workspace-exists-idempotently.md
@@ -82,9 +83,7 @@
 |               `-- P1-04-create-labels-and-milestones.md
 |-- prisma
 |   |-- migrations
-|   |   |-- 20260212173944_smoke_test
-|   |   |   `-- migration.sql
-|   |   |-- 20260223212023_add_menuversion_model
+|   |   |-- 20260412000000_postgres_baseline
 |   |   |   `-- migration.sql
 |   |   `-- migration_lock.toml
 |   `-- schema.prisma
@@ -103,8 +102,8 @@
 |-- eslint.config.mjs
 |-- MILESTONES.md
 |-- next.config.ts
-|-- package-lock.json
 |-- package.json
+|-- package-lock.json
 |-- prisma.config.ts
 |-- PROJECT_TREE.md
 |-- README.md
@@ -117,8 +116,8 @@
 
 ## Summary
 
-- **Total Files**: 81
-- **Total Directories**: 30
+- **Total Files**: 80
+- **Total Directories**: 23
 - **Exclusion Source**: `.gitignore`
 - **Excluded Highlights**: `.git`, `node_modules`, `.next`, `.temp`, `.agents`, `.vscode`,
   `coverage`, `out`, `build`, `generated`

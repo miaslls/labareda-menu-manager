@@ -1,7 +1,7 @@
 # Milestones
 
 Status: Active. This document defines capability boundaries for the project. Changes to milestone
-structure require architectural review and may require a new ADR. Last reviewed: 2026-03-18.
+structure require architectural review and may require a new ADR. Last reviewed: 2026-04-14.
 
 ---
 
@@ -44,7 +44,7 @@ Closes when:
 
 - Next.js App Router is initialized
 - TypeScript and ESLint are configured
-- Prisma + SQLite are configured
+- Prisma + Postgres (Neon-targeted) are configured
 - Initial migration runs successfully
 - Governance documents exist and are coherent
 - Branch protection and PR workflow are enforced
