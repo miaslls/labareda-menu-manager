@@ -1,4 +1,4 @@
-import { MenuVersionStatus } from '@domain/menu-version/MenuVersionStatus';
+import type { MenuVersionStatus } from '@domain/menu-version/MenuVersionStatus';
 
 export interface MenuVersion {
   id: string;
