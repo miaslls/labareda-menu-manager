@@ -14,6 +14,7 @@ export async function createCategoryInDraftWorkspace(
   displayName: string
 ): Promise<Category> {
   const normalizedDisplayName = displayName.trim();
+  const normalizedDisplayNameKey = normalizedDisplayName.toUpperCase();
 
   if (normalizedDisplayName.length === 0) {
     throw new InvalidCategoryDisplayNameError({ reason: 'empty_after_trim' });
@@ -24,7 +25,11 @@ export async function createCategoryInDraftWorkspace(
 
   requireContiguousCategoryOrder(draftCategories);
 
-  if (draftCategories.some((category) => category.displayName === normalizedDisplayName)) {
+  if (
+    draftCategories.some(
+      (category) => category.displayName.trim().toUpperCase() === normalizedDisplayNameKey
+    )
+  ) {
     throw new InvalidCategoryDisplayNameError({ reason: 'already_exists' });
   }
 

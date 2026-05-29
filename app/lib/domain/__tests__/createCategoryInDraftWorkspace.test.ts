@@ -287,4 +287,43 @@ describe('createCategoryInDraftWorkspace', () => {
 
     expect(categories).toEqual(initialCategories);
   });
+
+  test('throws and does not create a category when normalized display name already exists with different casing', async () => {
+    const initialCategories: Category[] = [
+      {
+        id: 'category-draft-menu-version-0',
+        menuVersionId: 'draft-menu-version',
+        displayName: 'Drinks',
+        position: 0,
+      },
+    ];
+
+    const fakeCategoryRepository = new FakeCategoryRepository(initialCategories);
+    const fakeMenuVersionRepository = createDraftMenuVersionRepository();
+
+    try {
+      await createCategoryInDraftWorkspace(
+        AUDIENCE.ADMIN_EDIT,
+        fakeCategoryRepository,
+        fakeMenuVersionRepository,
+        'drinks'
+      );
+
+      throw new Error('expected function to throw');
+    } catch (err) {
+      expect(err).toBeInstanceOf(InvalidCategoryDisplayNameError);
+
+      if (!(err instanceof InvalidCategoryDisplayNameError)) {
+        throw new Error('expected InvalidCategoryDisplayNameError');
+      }
+
+      expect(err.code).toBe('INVALID_CATEGORY_DISPLAY_NAME');
+      expect(err.meta.reason).toBe('already_exists');
+      expect(fakeCategoryRepository.createCategoryCallCount).toBe(0);
+    }
+
+    const categories = await fakeCategoryRepository.listByMenuVersionId('draft-menu-version');
+
+    expect(categories).toEqual(initialCategories);
+  });
 });
