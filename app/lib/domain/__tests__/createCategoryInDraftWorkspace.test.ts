@@ -199,4 +199,92 @@ describe('createCategoryInDraftWorkspace', () => {
 
     expect(categories).toEqual(initialCategories);
   });
+
+  test('throws category ordering violation before duplicate display name when existing order is corrupt', async () => {
+    const initialCategories: Category[] = [
+      {
+        id: 'category-draft-menu-version-0',
+        menuVersionId: 'draft-menu-version',
+        displayName: 'Appetizers',
+        position: 0,
+      },
+      {
+        id: 'category-draft-menu-version-2',
+        menuVersionId: 'draft-menu-version',
+        displayName: 'Drinks',
+        position: 2,
+      },
+    ];
+
+    const fakeCategoryRepository = new FakeCategoryRepository(initialCategories);
+    const fakeMenuVersionRepository = createDraftMenuVersionRepository();
+
+    try {
+      await createCategoryInDraftWorkspace(
+        AUDIENCE.ADMIN_EDIT,
+        fakeCategoryRepository,
+        fakeMenuVersionRepository,
+        'Drinks'
+      );
+
+      throw new Error('expected function to throw');
+    } catch (err) {
+      expect(err).toBeInstanceOf(CategoryOrderingInvariantViolationError);
+
+      if (!(err instanceof CategoryOrderingInvariantViolationError)) {
+        throw new Error('expected CategoryOrderingInvariantViolationError');
+      }
+
+      expect(err.code).toBe('ORDERING_INVARIANT_VIOLATION');
+      expect(err.meta.categoryCount).toBe(2);
+      expect(err.meta.duplicatePositions).toEqual([]);
+      expect(err.meta.menuVersionIds).toEqual(['draft-menu-version']);
+      expect(err.meta.missingPositions).toEqual([1]);
+      expect(err.meta.positions).toEqual([0, 2]);
+      expect(fakeCategoryRepository.createCategoryCallCount).toBe(0);
+    }
+
+    const categories = await fakeCategoryRepository.listByMenuVersionId('draft-menu-version');
+
+    expect(categories).toEqual(initialCategories);
+  });
+
+  test('throws and does not create a category when normalized display name already exists', async () => {
+    const initialCategories: Category[] = [
+      {
+        id: 'category-draft-menu-version-0',
+        menuVersionId: 'draft-menu-version',
+        displayName: 'Drinks',
+        position: 0,
+      },
+    ];
+
+    const fakeCategoryRepository = new FakeCategoryRepository(initialCategories);
+    const fakeMenuVersionRepository = createDraftMenuVersionRepository();
+
+    try {
+      await createCategoryInDraftWorkspace(
+        AUDIENCE.ADMIN_EDIT,
+        fakeCategoryRepository,
+        fakeMenuVersionRepository,
+        ' Drinks '
+      );
+
+      throw new Error('expected function to throw');
+    } catch (err) {
+      expect(err).toBeInstanceOf(InvalidCategoryDisplayNameError);
+
+      if (!(err instanceof InvalidCategoryDisplayNameError)) {
+        throw new Error('expected InvalidCategoryDisplayNameError');
+      }
+
+      expect(err.code).toBe('INVALID_CATEGORY_DISPLAY_NAME');
+      expect(err.meta.reason).toBe('already_exists');
+      expect(fakeCategoryRepository.createCategoryCallCount).toBe(0);
+    }
+
+    const categories = await fakeCategoryRepository.listByMenuVersionId('draft-menu-version');
+
+    expect(categories).toEqual(initialCategories);
+  });
 });

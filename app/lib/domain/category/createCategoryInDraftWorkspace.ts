@@ -24,6 +24,10 @@ export async function createCategoryInDraftWorkspace(
 
   requireContiguousCategoryOrder(draftCategories);
 
+  if (draftCategories.some((category) => category.displayName === normalizedDisplayName)) {
+    throw new InvalidCategoryDisplayNameError({ reason: 'already_exists' });
+  }
+
   const category = await categoryRepository.createCategory({
     menuVersionId: draftMenuVersion.id,
     position: draftCategories.length,
