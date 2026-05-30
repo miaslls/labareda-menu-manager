@@ -39,6 +39,8 @@ All PRs that introduce or rely on an ADR must link to it.
 | ADR-008 | Domain error taxonomy and invariant failure model       | Accepted | 2026-02-24 | —          |
 | ADR-009 | Concurrency-safe DRAFT bootstrap enforcement model      | Accepted | 2026-03-09 | —          |
 | ADR-010 | Prisma-Neon connection target alignment contract        | Accepted | 2026-04-12 | ADR-009\*  |
+| ADR-011 | Postgres singleton-DRAFT enforcement model              | Accepted | 2026-05-29 | ADR-009    |
+| ADR-012 | Category ordering field name is position                | Accepted | 2026-05-29 | ADR-003\*  |
 
 ---
 
@@ -530,3 +532,136 @@ cross-target drift.
 - Configuration now has a hard invariant between pooled and unpooled Neon hosts
 - Local setup documentation must describe `.env.local` and both URL roles
 - Invalid or mismatched DB URL configuration now fails during startup/CLI bootstrap
+
+---
+
+## ADR-011 - Postgres singleton-DRAFT enforcement model
+
+Status: Accepted Date: 2026-05-29 Supersedes: ADR-009
+
+### Decision
+
+Enforce the singleton DRAFT workspace invariant in Postgres with a partial unique index:
+
+```sql
+CREATE UNIQUE INDEX "MenuVersion_single_draft_key"
+ON "MenuVersion" ("status")
+WHERE "status" = 'DRAFT';
+```
+
+Repository bootstrap behavior must reconcile only the expected create-conflict case: if concurrent
+empty-database callers race to create the first DRAFT and the database rejects the second insert,
+the repository reads and returns the singleton DRAFT. Other failures continue to surface.
+
+The domain invariant posture remains unchanged: non-empty corruption, including zero DRAFT rows or
+multiple DRAFT rows observed during reads, fails loudly.
+
+### Context
+
+ADR-009 selected a hybrid singleton-DRAFT enforcement model, but its concrete follow-ups were
+SQLite-specific. The project now targets Postgres through Neon, so the storage-level guardrail needs
+to be expressed in Postgres terms.
+
+The current implementation has `ensureDraftWorkspace()` and a `createDraft()` repository method, but
+the schema does not yet include a singleton-DRAFT database constraint and the repository does not
+yet reconcile create conflicts.
+
+### Options Considered
+
+- Leave singleton-DRAFT enforcement in domain code only
+- Add a full unique constraint on `MenuVersion.status`
+- Add a Postgres partial unique index for `status = 'DRAFT'` plus repository conflict readback
+
+### Criteria
+
+- Preserve the domain invariant that exactly one DRAFT exists
+- Allow multiple PUBLISHED or REPLACED lifecycle states only where architecture permits future
+  transitions
+- Keep concurrent bootstrap deterministic
+- Avoid silently repairing already-corrupt non-empty states
+- Use database-native enforcement compatible with the current Postgres target
+
+### Outcome
+
+Postgres partial unique index plus repository conflict readback was selected.
+
+This preserves ADR-009's hybrid model while replacing the SQLite-specific implementation detail with
+a Postgres-compatible constraint. It protects storage from duplicate DRAFT rows and keeps bootstrap
+idempotent under expected contention.
+
+### Consequences
+
+- A migration must add the Postgres partial unique index on `MenuVersion(status)` where status is
+  DRAFT.
+- `PrismaMenuVersionRepository.createDraft()` must translate the unique-conflict path into a read of
+  the singleton DRAFT.
+- The repository must not reconcile zero-DRAFT or multiple-DRAFT corruption during normal reads.
+- Tests must cover sequential bootstrap, create-conflict readback, and failure propagation.
+- ADR-009 remains historical context but is superseded for concrete storage enforcement.
+
+### Follow-ups
+
+- [ ] Add Postgres migration for `MenuVersion_single_draft_key`
+- [ ] Implement create-conflict readback in `PrismaMenuVersionRepository.createDraft()`
+- [ ] Add deterministic tests for singleton-DRAFT bootstrap behavior
+
+---
+
+## ADR-012 - Category ordering field name is position
+
+Status: Accepted Date: 2026-05-29 Supersedes: ADR-003 (partial)
+
+### Decision
+
+Use `position` as the canonical field name for category ordering in the domain model, repository
+contracts, Prisma schema, and tests.
+
+The ordering invariant from ADR-003 remains unchanged: category positions are explicit integers,
+0-based, contiguous, and unique within one `MenuVersion`; ordering changes are owned by domain
+operations.
+
+### Context
+
+ADR-003 used `sortOrder` as the conceptual field name for category and item ordering. The
+implemented category model uses `position` consistently:
+
+- Prisma `Category.position`
+- domain `Category.position`
+- `CreateCategoryInput.position`
+- `CategoryRepository` ordering by `position`
+- `requireContiguousCategoryOrder`
+- draft category creation appending at `draftCategories.length`
+
+The architecture reference now uses `position` for implemented category behavior. Leaving ADR-003 as
+the only naming record would make the accepted decision log conflict with the actual category
+contract.
+
+### Options Considered
+
+- Rename implementation from `position` back to `sortOrder`
+- Edit ADR-003 in place
+- Add a partial superseding ADR that records `position` for categories while preserving the ordering
+  invariant
+
+### Criteria
+
+- Preserve append-only ADR governance
+- Match the current implemented contract
+- Keep terminology short and stable across schema, domain, persistence, and tests
+- Avoid changing the ordering invariant while resolving the naming drift
+
+### Outcome
+
+`position` is the canonical category ordering field name.
+
+ADR-003 still defines the ordering model and invariant. ADR-012 supersedes ADR-003 only where
+ADR-003 names the category ordering field `sortOrder`.
+
+### Consequences
+
+- New category code and docs must use `position`, not `sortOrder`.
+- Existing category schema and tests remain aligned with the accepted naming decision.
+- Future item work may either use `position` for consistency or record a separate decision if item
+  ordering needs different terminology.
+- References to `sortOrder` in target item architecture remain conceptual until item implementation
+  begins.

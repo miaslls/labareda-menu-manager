@@ -1,6 +1,6 @@
 # Roadmap
 
-Status: Active execution phase. Last reviewed: 2026-04-14.
+Status: Active execution phase. Last reviewed: 2026-05-29.
 
 This document defines the ordered progression of capability delivery. It translates milestone
 definitions into execution sequence and current focus.
@@ -11,8 +11,10 @@ Milestones define capability boundaries. This roadmap defines progression and ex
 
 # Roadmap Principles
 
-- Execution follows milestone order strictly.
-- No milestone work begins before the previous milestone is closed.
+- Execution follows milestone order for product capabilities.
+- No product capability work begins before its prerequisite milestone is closed.
+- Cross-cutting hardening may be inserted when implementation review exposes an unresolved invariant
+  or accepted ADR follow-up.
 - Architectural stability takes precedence over speed.
 - Scope expansion requires an ADR.
 
@@ -105,6 +107,8 @@ Deliverable (Satisfied):
 
 ## Milestone 2 - Categories in Draft
 
+Status: Active.
+
 Objective: Enable category management with strict ordering.
 
 Focus Areas:
@@ -112,6 +116,25 @@ Focus Areas:
 - Category model
 - Ordering invariants
 - Create / move / delete-empty operations
+
+Implemented so far:
+
+- Category schema linked to `MenuVersion`
+- Category domain model and repository boundary
+- Prisma-backed category repository adapter
+- Category ordering invariant checker
+- Draft category creation operation
+
+Remaining core work:
+
+- Move category up/down within draft workspace
+- Delete empty category and close ordering gap
+- Milestone 2 proof artifact
+
+Deferred hardening:
+
+- Concurrent category append protection
+- Category creation postcondition checks
 
 Deliverable:
 
@@ -173,11 +196,23 @@ Deliverable:
 
 Current Milestone: Milestone 2 - Categories in Draft
 
-Next Action:
+Current implementation state:
 
-- Define Category schema linked to MenuVersion
-- Introduce Category repository contract at domain boundary
-- Implement domain ordering invariant (0-based, contiguous, unique)
+- M2-01 through M2-04 are implemented.
+- M2-05 through M2-07 remain open.
+- ADR-011 records a Postgres singleton-DRAFT enforcement decision that must be implemented before
+  relying on the draft workspace invariant for broader mutation flows.
+
+Next Actions:
+
+1. Implement ADR-011 follow-ups:
+   - add Postgres partial unique index for singleton DRAFT
+   - add repository create-conflict readback
+   - verify deterministic bootstrap behavior
+2. Continue Milestone 2 core work with M2-05:
+   - move category up/down within draft workspace
+   - preserve 0-based, contiguous, unique category positions
+   - fail loudly on corrupted ordering
 
 ---
 

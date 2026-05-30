@@ -3,7 +3,7 @@
 # Milestone 2 - Issue Map
 
 Status: Planning artifact. Purpose: Derive the issue sequence needed to close Milestone 2 -
-Categories Ordered Within Draft. Last reviewed: 2026-05-12.
+Categories Ordered Within Draft. Last reviewed: 2026-05-30.
 
 Milestone capability target:
 
@@ -21,9 +21,10 @@ domain layer:
 2. M2-02 - Category domain model + repository boundary
 3. M2-03 - Category ordering invariant checker
 4. M2-04 - Create category in draft workspace
-5. M2-05 - Move category up/down within draft workspace
-6. M2-06 - Delete empty category and close ordering gap
-7. M2-07 - Integration verification proof artifact
+5. M2-P01 - Implement Postgres singleton-DRAFT enforcement
+6. M2-05 - Move category up/down within draft workspace
+7. M2-06 - Delete empty category and close ordering gap
+8. M2-07 - Integration verification proof artifact
 
 ---
 
@@ -198,6 +199,33 @@ Out of scope:
 - Category reordering
 - UI and route handlers
 
+## M2-P01 - Implement Postgres singleton-DRAFT enforcement
+
+Problem type: invariant and persistence guardrail.
+
+Capability added:
+
+- Postgres prevents duplicate DRAFT workspaces and repository bootstrap handles the expected
+  concurrent create-conflict path deterministically.
+
+Success criteria:
+
+- Postgres migration adds partial unique index `MenuVersion_single_draft_key`
+- Index enforces uniqueness for `MenuVersion.status = 'DRAFT'`
+- `PrismaMenuVersionRepository.createDraft()` translates the expected unique-conflict path into a
+  read of the singleton DRAFT
+- Non-constraint failures still surface
+- Zero-DRAFT or multiple-DRAFT corruption during normal reads still fails loudly in the domain
+- Tests cover sequential bootstrap and create-conflict readback behavior
+
+Out of scope:
+
+- Category move/delete behavior
+- Category append concurrency hardening
+- Publish flow
+- Public read
+- UI and route handlers
+
 ## M2-05 - Move category up/down within draft workspace
 
 Problem type: transformation.
@@ -288,8 +316,10 @@ Out of scope:
 # What Is Allowed to Change
 
 - Prisma schema and migrations for category persistence
+- Prisma migration for the ADR-011 singleton-DRAFT Postgres guardrail
 - Domain category model, errors, repository contracts, and operations
 - Persistence adapter implementation for category repositories
+- Focused repository behavior for singleton-DRAFT create-conflict readback
 - DB-free domain tests for category behavior
 - A focused proof script for Milestone 2 closure
 - Documentation that records the actual capability and verification evidence
@@ -305,6 +335,8 @@ Out of scope:
 - No database access in domain tests
 - No item, publish, public-read, or authentication behavior in Milestone 2
 - No silent corruption repair outside explicit domain operations
+- M2-P01 may harden storage and repository behavior for singleton-DRAFT bootstrap, but it must not
+  change the domain invariant posture for corrupted non-empty workspace state
 
 ---
 

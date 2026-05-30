@@ -1,7 +1,7 @@
 # Architecture Reference
 
 > Status: Frozen as of Milestone 0. Changes to this document require an architectural decision
-> recorded in `DECISIONS.md`. Last implementation-alignment review: 2026-04-14.
+> recorded in `DECISIONS.md`. Last implementation-alignment review: 2026-05-29.
 
 Labareda Menu Manager Architecture
 
@@ -33,7 +33,8 @@ database.
 
 # 1A. Current Implementation Snapshot
 
-As of 2026-03-18, the implemented slice is Milestone 1 only.
+As of 2026-05-29, the implemented slice is the draft workspace foundation plus early category domain
+and persistence behavior.
 
 Implemented:
 
@@ -41,14 +42,21 @@ Implemented:
 - Domain invariant enforcement for single-draft cardinality
 - Domain bootstrap operation (`ensureDraftWorkspace`)
 - Domain read operation (`getDraftWorkspace`) for `adminEdit`
+- Category schema linked to `MenuVersion`
+- Category domain model and repository boundary
+- Prisma-backed category repository adapter
+- Category ordering invariant enforcement
+- Category creation in the draft workspace
 
 Not yet implemented:
 
-- Category and item domain behavior
+- Item domain behavior
+- Category update, move, or delete-empty behavior
 - Publish flow
 - Public read path
 - Authentication boundary
 - Route handlers for menu operations
+- Admin or public menu UI workflows
 
 This section clarifies implementation status only; it does not change architecture policy.
 
@@ -58,13 +66,16 @@ This section clarifies implementation status only; it does not change architectu
 
 The system follows a strict layered architecture.
 
-```
+```text
 UI (App Router Pages + Components)
-        ↓
+        |
+        v
 Route Handlers (HTTP boundary)
-        ↓
+        |
+        v
 Domain Layer (`lib/`)
-        ↓
+        |
+        v
 Persistence Layer (Prisma + Database)
 ```
 
@@ -127,7 +138,7 @@ This is enforced by convention and review ritual; violations are treated as arch
 
 # 3. Core Domain Model
 
-## 3.1 MenuVersion (Workspace Model — B1)
+## 3.1 MenuVersion (Workspace Model - B1)
 
 MenuVersion represents a workspace.
 
@@ -157,24 +168,30 @@ No historical browsing is modeled.
 
 Belongs to exactly one MenuVersion.
 
-Fields (conceptual):
+Implemented fields:
 
 - id
 - menuVersionId
-- name
-- description (optional)
-- sortOrder
-- isVisible
+- displayName
+- position
+
+Target fields not yet implemented:
+
+- description (optional), if retained by future product design
+- isVisible, if category visibility remains part of the final public-menu model
 
 Invariants:
 
-- sortOrder is 0-based, contiguous, unique per MenuVersion
-- name uniqueness scope defined per MenuVersion
-- Deletion allowed only if category contains no items
+- position is 0-based, contiguous, unique per MenuVersion
+- displayName is normalized before creation
+- displayName is unique per draft MenuVersion for category creation
+- Deletion allowed only if category contains no items once items exist
 
 ---
 
 ## 3.3 Item
+
+Target architecture. Not implemented yet.
 
 Belongs to exactly one Category and one MenuVersion.
 
@@ -199,6 +216,8 @@ Invariants:
 
 # 4. Publish Flow
 
+Target architecture. Not implemented yet.
+
 Publish operation must be atomic.
 
 Steps:
@@ -213,6 +232,9 @@ No partial publish states may be visible externally.
 ---
 
 # 4A. MenuVersion State Transition Diagram
+
+Target architecture for publish behavior. Only the statuses and draft workspace foundation are
+implemented today.
 
 MenuVersion statuses form a simple directed state machine.
 
@@ -257,6 +279,8 @@ REPLACED exists to preserve referential integrity and auditability without expos
 
 # 5. Audience-Based Domain Reads
 
+Target architecture. Current implementation supports `adminEdit` draft reads only.
+
 Domain read operations are audience-aware.
 
 Audiences:
@@ -290,9 +314,35 @@ All visibility filtering logic belongs in the domain layer.
 
 # 5A. Request Lifecycle Walkthroughs
 
-This section describes end-to-end request flow across layers.
+This section describes end-to-end request flow across layers. Only the domain-level category
+creation flow is implemented today; UI, route handlers, item behavior, publish behavior, and
+category movement remain target architecture.
 
-## 5A.1 Example: Create Item (Admin)
+## 5A.1 Current Example: Create Category in Draft Workspace
+
+Goal: Append a category to the DRAFT workspace while preserving category ordering invariants.
+
+Implemented domain flow:
+
+1. Caller
+   - Supplies an audience, category repository, menu-version repository, and display name.
+   - Does not decide draft lifecycle or ordering rules.
+
+2. Domain
+   - Normalizes `displayName` by trimming whitespace.
+   - Rejects empty names with `InvalidCategoryDisplayNameError`.
+   - Resolves the single draft workspace through `getDraftWorkspace`.
+   - Reads existing draft categories through `CategoryRepository.listByMenuVersionId`.
+   - Enforces category ordering through `requireContiguousCategoryOrder`.
+   - Rejects duplicate normalized display names.
+   - Calls `CategoryRepository.createCategory` with the next contiguous `position`.
+
+3. Persistence
+   - Stores the requested category and maps the record back to the domain `Category` shape.
+
+## 5A.2 Target Example: Create Item (Admin)
+
+Not implemented yet.
 
 Goal: Create a new item in a category within the DRAFT workspace.
 
@@ -321,16 +371,18 @@ Flow:
 
 5. Route Handler
    - Maps domain result:
-     - success → 201 JSON
-     - domain validation error → 400
-     - not found → 404
-     - invariant/corruption error → 409 or 500 depending on classification
+     - success -> 201 JSON
+     - domain validation error -> 400
+     - not found -> 404
+     - invariant/corruption error -> 409 or 500 depending on classification
 
 6. UI
    - Updates UI state.
    - Shows explicit error message if returned.
 
-## 5A.2 Example: Publish Draft
+## 5A.3 Target Example: Publish Draft
+
+Not implemented yet.
 
 Goal: Make the draft menu live and create a fresh draft seeded from it.
 
@@ -348,8 +400,8 @@ Flow:
      - ordering invariants for categories and items
      - referential integrity (items match category MenuVersion)
    - Runs atomic publish transaction:
-     - demote current PUBLISHED → REPLACED (if exists)
-     - promote DRAFT → PUBLISHED
+     - demote current PUBLISHED -> REPLACED (if exists)
+     - promote DRAFT -> PUBLISHED
      - create new DRAFT
      - seed new DRAFT with categories/items copied from new PUBLISHED
    - Returns success or explicit domain error.
@@ -366,7 +418,9 @@ Notes:
 - Seeding the new draft is operationally required for owner-friendly editing.
 - The system does not expose prior versions through UI; REPLACED is internal.
 
-## 5A.3 Example: Move Category Up (Ordering Swap)
+## 5A.4 Target Example: Move Category Up (Ordering Swap)
+
+Not implemented yet.
 
 Goal: Move a category up by one position within the DRAFT workspace while preserving ordering
 invariants.
@@ -374,7 +428,7 @@ invariants.
 Flow:
 
 1. UI (Admin)
-   - Admin clicks “Move up” on a category.
+   - Admin clicks "Move up" on a category.
 
 2. Route Handler
    - Validates transport concerns (categoryId present).
@@ -382,13 +436,13 @@ Flow:
 
 3. Domain (lib/)
    - Resolves DRAFT MenuVersion.
-   - Loads the target category and its neighbor (sortOrder - 1) within the same MenuVersion.
+   - Loads the target category and its neighbor (`position - 1`) within the same MenuVersion.
    - Applies rules:
      - If category is already at the top boundary, operation is a no-op.
-     - Otherwise, swap sortOrder with the immediate neighbor.
+     - Otherwise, swap `position` with the immediate neighbor.
    - Performs swap atomically in a single transaction.
    - Ensures postconditions:
-     - sortOrder values remain contiguous, unique, and cover 0..N-1.
+     - `position` values remain contiguous, unique, and cover 0..N-1.
    - Returns success or explicit corruption/invariant error.
 
 4. Persistence (Prisma)
@@ -396,9 +450,9 @@ Flow:
 
 5. Route Handler
    - Maps domain result:
-     - success → 200
-     - not found → 404
-     - corrupted ordering → 409
+     - success -> 200
+     - not found -> 404
+     - corrupted ordering -> 409
 
 6. UI
    - Re-renders list using the returned ordering.
@@ -408,9 +462,22 @@ Flow:
 
 # 5B. Error Taxonomy and HTTP Mapping
 
+Target architecture for route handlers and transport mapping. Current implementation has a
+domain-owned `DomainError` base class plus concrete domain errors; HTTP mapping is not implemented
+yet.
+
 The system distinguishes error classes to keep behavior predictable and debuggable.
 
 ## 5B.1 Domain Error Classes
+
+Current implemented domain errors:
+
+- `DraftInvariantViolationError`
+- `UnsupportedAudienceError`
+- `CategoryOrderingInvariantViolationError`
+- `InvalidCategoryDisplayNameError`
+
+The classes below are target transport classifications, not current class names.
 
 ### ValidationError
 
@@ -475,13 +542,13 @@ Examples:
 
 Route handlers translate domain errors into HTTP responses.
 
-- ValidationError → 400
-- NotFoundError → 404
-- ConflictError → 409
-- CorruptionError → 409 (or 500 if treating as internal fault; choose one policy and keep it
+- ValidationError -> 400
+- NotFoundError -> 404
+- ConflictError -> 409
+- CorruptionError -> 409 (or 500 if treating as internal fault; choose one policy and keep it
   consistent)
-- AuthError → 401 (or 403 depending on auth mechanism)
-- UnexpectedError → 500
+- AuthError -> 401 (or 403 depending on auth mechanism)
+- UnexpectedError -> 500
 
 ## 5B.3 Error Payload Contract (Transport)
 
@@ -499,8 +566,15 @@ The UI should render `message` directly and avoid interpreting error causes beyo
 
 ## 5B.4 Reserved Error Code Appendix
 
-This appendix defines stable, reusable error codes. These codes form part of the transport contract
-and must not be changed casually.
+This appendix defines target transport error codes. These are not all implemented yet, and they must
+be reconciled with current domain codes before route handlers expose them as an HTTP contract.
+
+Current implemented domain codes:
+
+- `DRAFT_INVARIANT_VIOLATION`
+- `UNSUPPORTED_AUDIENCE`
+- `ORDERING_INVARIANT_VIOLATION`
+- `INVALID_CATEGORY_DISPLAY_NAME`
 
 ### Category Errors
 
@@ -560,13 +634,16 @@ Ordering is explicit and deterministic.
 
 Categories:
 
-- sortOrder per MenuVersion
+- position per MenuVersion
 - Modified only via domain operations
+- Current implementation validates 0-based, contiguous, unique category positions and appends new
+  draft categories at the next position.
 
 Items:
 
 - sortOrder per Category
 - Modified only via domain operations
+- Target architecture. Not implemented yet.
 
 Ordering changes must be atomic.
 
@@ -575,6 +652,8 @@ Corrupted ordering (gaps or duplicates) results in domain error.
 ---
 
 # 7. Visibility Model
+
+Target architecture. Not implemented yet.
 
 Visibility and publish state are orthogonal.
 
@@ -591,6 +670,8 @@ Public display rule:
 
 # 8. Authentication Boundary
 
+Target architecture. Not implemented yet.
+
 Authentication protects:
 
 - All admin routes
@@ -604,6 +685,10 @@ Authentication is minimal and does not model roles or multi-user behavior.
 ---
 
 # 9. Data Integrity and Transactions
+
+Target architecture for mutation flows that can expose intermediate invalid states. Current category
+creation relies on domain ordering validation and the database uniqueness constraint, but the
+broader transaction policy is not fully implemented yet.
 
 Operations that modify:
 

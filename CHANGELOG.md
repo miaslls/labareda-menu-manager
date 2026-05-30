@@ -9,7 +9,39 @@ behavior changes in a way that affects users or contributors.
 
 ## Unreleased
 
-- No unreleased changes yet after `0.2.0`.
+### Added
+
+- Category persistence linked to `MenuVersion`, including `displayName`, `position`, and a unique
+  `(position, menuVersionId)` constraint.
+- Category domain model, repository boundary, and Prisma-backed repository adapter.
+- DB-free category repository contract coverage.
+- Category ordering invariant enforcement:
+  - `requireContiguousCategoryOrder()`
+  - `CategoryOrderingInvariantViolationError` (`ORDERING_INVARIANT_VIOLATION`)
+- Draft category creation operation:
+  - `createCategoryInDraftWorkspace()`
+  - `InvalidCategoryDisplayNameError` (`INVALID_CATEGORY_DISPLAY_NAME`)
+  - trimmed display-name normalization
+  - duplicate display-name rejection within the draft workspace
+  - fail-loud behavior when existing category order is corrupt
+- Milestone 2 hardening plan for concurrent category appends and category creation postcondition
+  checks.
+- ADR-011 for Postgres singleton-DRAFT enforcement.
+- ADR-012 recording `position` as the canonical category ordering field name.
+
+### Changed
+
+- Quality gate script renamed from `npm run check` to `npm run verify`.
+- TypeScript path aliases ordered by specificity for more stable auto-import behavior.
+- Root governance docs aligned to the current implementation state and remaining Milestone 2 work.
+
+### Known Deferrals
+
+- ADR-011 implementation follow-ups remain open:
+  - Postgres partial unique index for singleton DRAFT
+  - repository create-conflict readback
+  - deterministic singleton-DRAFT bootstrap tests
+- Milestone 2 still excludes category move, delete-empty, and proof closure work.
 
 ---
 

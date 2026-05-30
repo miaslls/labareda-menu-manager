@@ -7,7 +7,7 @@ review and may require a new ADR.
 
 # Core Purpose
 
-Labareda Menu Manager is a single-restaurant administrative tool that enables:
+Labareda Menu Manager is scoped as a single-restaurant administrative tool that supports:
 
 - Draft editing of menu structure and items
 - Controlled publishing to a public menu
@@ -18,9 +18,35 @@ The system is intentionally constrained and does not aim to be a general restaur
 
 ---
 
+# Current Implementation Status
+
+The current implementation is an early domain and persistence foundation for this product scope.
+
+Implemented now:
+
+- `MenuVersion` persistence with DRAFT, PUBLISHED, and REPLACED statuses
+- Draft workspace domain behavior
+- Category persistence linked to `MenuVersion`
+- Category domain model and repository boundary
+- Category ordering invariant enforcement
+- Category creation in the draft workspace
+
+Not implemented yet:
+
+- Item model, pricing, ordering, or visibility behavior
+- Category update, move, or delete-empty operations
+- Publish flow
+- Public menu read behavior
+- Admin route handlers or UI workflows
+
+These omissions do not change the intended product scope; they mark the current implementation
+boundary.
+
+---
+
 # In-Scope
 
-The following capabilities are explicitly in scope:
+The following capabilities are explicitly in product scope:
 
 ## Menu Management
 

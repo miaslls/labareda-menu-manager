@@ -19,11 +19,23 @@
 |   |   |   `-- prisma-client.ts
 |   |   |-- domain
 |   |   |   |-- __tests__
+|   |   |   |   |-- CategoryRepository.contract.test.ts
+|   |   |   |   |-- createCategoryInDraftWorkspace.test.ts
 |   |   |   |   |-- domain-error-taxonomy.test.ts
 |   |   |   |   |-- ensureDraftWorkspace.test.ts
 |   |   |   |   |-- getDraftWorkspace.test.ts
+|   |   |   |   |-- requireContiguousCategoryOrder.test.ts
 |   |   |   |   |-- requireSingleDraftMenuVersion.test.ts
 |   |   |   |   `-- vitest-harness.test.ts
+|   |   |   |-- category
+|   |   |   |   |-- repositories
+|   |   |   |   |   `-- CategoryRepository.ts
+|   |   |   |   |-- Category.ts
+|   |   |   |   |-- CategoryOrderingInvariantViolationError.ts
+|   |   |   |   |-- CreateCategoryInput.ts
+|   |   |   |   |-- InvalidCategoryDisplayNameError.ts
+|   |   |   |   |-- createCategoryInDraftWorkspace.ts
+|   |   |   |   `-- requireContiguousCategoryOrder.ts
 |   |   |   |-- errors
 |   |   |   |   |-- DomainError.ts
 |   |   |   |   `-- UnsupportedAudienceError.ts
@@ -31,18 +43,20 @@
 |   |   |   |   |-- repositories
 |   |   |   |   |   `-- MenuVersionRepository.ts
 |   |   |   |   |-- DraftInvariantViolationError.ts
-|   |   |   |   |-- ensureDraftWorkspace.ts
-|   |   |   |   |-- getDraftWorkspace.ts
 |   |   |   |   |-- MenuVersion.ts
 |   |   |   |   |-- MenuVersionStatus.ts
+|   |   |   |   |-- ensureDraftWorkspace.ts
+|   |   |   |   |-- getDraftWorkspace.ts
 |   |   |   |   `-- requireSingleDraftMenuVersion.ts
 |   |   |   `-- Audience.ts
 |   |   |-- errors
 |   |   |   `-- NotImplementedError.ts
 |   |   `-- persistence
+|   |       |-- category
+|   |       |   `-- PrismaCategoryRepository.ts
 |   |       `-- menu-version
-|   |           |-- mapStatus.ts
-|   |           `-- PrismaMenuVersionRepository.ts
+|   |           |-- PrismaMenuVersionRepository.ts
+|   |           `-- mapStatus.ts
 |   |-- globals.css
 |   |-- layout.tsx
 |   |-- page.tsx
@@ -75,6 +89,16 @@
 |       |   |   |-- M1-05-ensure-initial-draft-workspace-exists-idempotently.md
 |       |   |   `-- M1-06-integration-verification-and-milestone-1-proof.md
 |       |   `-- ISSUE_MAP.md
+|       |-- milestone-2
+|       |   |-- issues
+|       |   |   |-- M2-05-move-category-up-down-within-draft-workspace.md
+|       |   |   |-- M2-06-delete-empty-category-and-close-ordering-gap.md
+|       |   |   |-- M2-07-integration-verification-and-milestone-2-proof.md
+|       |   |   |-- M2-H01-harden-concurrent-category-appends.md
+|       |   |   |-- M2-H02-add-category-creation-postcondition-checks.md
+|       |   |   `-- M2-P01-implement-postgres-singleton-draft-enforcement.md
+|       |   |-- ISSUE_MAP.md
+|       |   `-- M2_HARDENING.md
 |       `-- phase-1
 |           `-- issues
 |               |-- P1-01-foundational-governance-documents.md
@@ -85,13 +109,15 @@
 |   |-- migrations
 |   |   |-- 20260412000000_postgres_baseline
 |   |   |   `-- migration.sql
+|   |   |-- 20260513002753_add_category_model
+|   |   |   `-- migration.sql
 |   |   `-- migration_lock.toml
 |   `-- schema.prisma
 |-- scripts
+|   |-- README.md
 |   |-- create_issues.sh
 |   |-- create_milestones.sh
-|   |-- proof-m1.integration.test.ts
-|   `-- README.md
+|   `-- proof-m1.integration.test.ts
 |-- .env.example
 |-- .gitignore
 |-- .prettierignore
@@ -116,8 +142,8 @@
 
 ## Summary
 
-- **Total Files**: 80
-- **Total Directories**: 23
+- **Total Files**: 100
+- **Total Directories**: 36
 - **Exclusion Source**: `.gitignore`
 - **Excluded Highlights**: `.git`, `node_modules`, `.next`, `.temp`, `.agents`, `.vscode`,
   `coverage`, `out`, `build`, `generated`
