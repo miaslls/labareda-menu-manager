@@ -1,7 +1,7 @@
 # Milestones
 
 Status: Active. This document defines capability boundaries for the project. Changes to milestone
-structure require architectural review and may require a new ADR. Last reviewed: 2026-04-14.
+structure require architectural review and may require a new ADR. Last reviewed: 2026-05-29.
 
 ---
 
@@ -81,9 +81,15 @@ Verification artifact:
 
 - `docs/planning/milestone-1/issues/M1-06-integration-verification-and-milestone-1-proof.md`
 
+Implementation note:
+
+- ADR-011 records storage-level Postgres hardening for the singleton-DRAFT invariant. That follow-up
+  does not reopen Milestone 1, but it should be completed before relying on the draft workspace
+  invariant for broader mutation flows.
+
 ---
 
-## Milestone 2 - Categories Ordered Within Draft
+## Milestone 2 - Categories Ordered Within Draft (Active)
 
 Capability unlocked: Categories can be created and ordered within the draft workspace.
 
@@ -93,6 +99,26 @@ Closes when:
 - Category ordering invariants are enforced (0-based, contiguous, unique per version)
 - Create, move up/down, and delete-empty-category operations work in draft
 - Ordering corruption results in explicit domain error
+
+Implemented so far:
+
+- Category schema linked to `MenuVersion`
+- Category domain model and repository boundary
+- Prisma-backed category repository adapter
+- Category ordering invariant checker
+- Draft category creation operation
+
+Remaining before closure:
+
+- Move category up/down within draft workspace
+- Delete empty category and close ordering gap
+- Milestone 2 proof artifact
+- Documentation updates that record closure evidence
+
+Deferred hardening:
+
+- Concurrent category append protection
+- Category creation postcondition checks
 
 Explicitly excludes:
 

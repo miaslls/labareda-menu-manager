@@ -1,6 +1,7 @@
 # Labareda Menu Manager
 
-Last updated: 2026-04-14  
+Last updated: 2026-05-29
+
 Current package version: `0.2.0`
 
 Labareda Menu Manager is a single-restaurant menu management system built as a full-stack web
@@ -14,7 +15,7 @@ first-class concerns.
 
 ## Current Capability (Implemented)
 
-Milestone 1 is complete.
+Milestone 1 is complete. Milestone 2 is active.
 
 The system can now reliably:
 
@@ -22,17 +23,29 @@ The system can now reliably:
 - enforce the invariant "exactly one `DRAFT` exists" in the domain layer
 - retrieve the draft workspace for `adminEdit` audience deterministically
 - fail loudly on corruption through domain errors (`DRAFT_INVARIANT_VIOLATION`)
+- represent categories owned by a `MenuVersion`
+- expose a domain-level category repository boundary without Prisma in domain code
+- validate category positions as 0-based, contiguous, and unique per `MenuVersion`
+- create a category in the draft workspace at the next contiguous position
+- reject empty or duplicate draft category display names through domain errors
 
 Implemented domain operations:
 
 - `ensureDraftWorkspace(repo)`
 - `getDraftWorkspace(audience, repo)`
 - `requireSingleDraftMenuVersion(versions)`
+- `requireContiguousCategoryOrder(categories)`
+- `createCategoryInDraftWorkspace(audience, categoryRepository, menuVersionRepository, displayName)`
 
 Implemented proof workflow:
 
 - `npm run proof:m1`
 - `scripts/proof-m1.integration.test.ts`
+
+Current known hardening:
+
+- ADR-011 records the Postgres singleton-DRAFT database constraint and repository conflict-readback
+  behavior that still need implementation.
 
 ---
 
@@ -67,7 +80,7 @@ Clarity and correctness are prioritized over speed or early generalization.
 
 ## Workspace Model (B1)
 
-The system uses a workspace-based publishing model.
+The target system uses a workspace-based publishing model.
 
 There are always:
 
@@ -76,7 +89,7 @@ There are always:
 
 All editing occurs in the draft workspace.
 
-Publishing performs:
+Target publish behavior performs:
 
 - A pointer flip (draft becomes published)
 - Creation of a new draft seeded from the newly published version
@@ -95,25 +108,24 @@ MenuVersion status:
 
 Preview is not a lifecycle state.
 
-Admin users may access a "View as public" preview that renders the draft workspace using public
-visibility rules.
+Admin preview is target behavior and is not implemented yet.
 
 ---
 
 ## Visibility vs Publish
 
-Visibility and publish state are independent.
+Visibility and publish state are independent in the target architecture.
 
 - `status` determines which workspace is public.
 - `isVisible` determines whether a category or item is shown.
 
-An item may be published but hidden.
+Item visibility is not implemented yet.
 
 ---
 
 ## Domain Read Context
 
-Domain reads are audience-aware.
+Domain reads are audience-aware in the target architecture.
 
 Possible audiences:
 
@@ -121,16 +133,16 @@ Possible audiences:
 - `adminPreview`
 - `adminEdit`
 
-Public reads operate only on the published workspace. Admin preview renders draft data using public
-visibility filters. Admin edit operates on the draft workspace and includes hidden content.
+Current implementation supports `adminEdit` draft reads. Public reads and admin preview are not
+implemented yet.
 
 ---
 
 # Money Handling
 
-Item prices are stored as integers in BRL centavos (`priceCents`).
+Item prices are planned to be stored as integers in BRL centavos (`priceCents`).
 
-Formatting is performed at the UI boundary.
+Item pricing and UI formatting are not implemented yet.
 
 ---
 
@@ -246,7 +258,11 @@ fast.
 
 ## Planned but Not Implemented Yet
 
-- Category and item domain models
+- ADR-011 Postgres singleton-DRAFT hardening
+- Category move up/down operation
+- Delete-empty category operation
+- Milestone 2 proof artifact
+- Item domain model
 - Publish flow (`DRAFT -> PUBLISHED -> new DRAFT`)
 - Public read path
 - Authentication boundary
@@ -275,6 +291,7 @@ Scope changes require explicit architectural decisions.
 - Phase B - Repository Initialization: Complete
 - Phase C - Milestone 0: Complete
 - Phase D - Milestone 1: Complete (2026-03-18)
+- Phase E - Milestone 2: Active
 
 Milestone 0 established the governed repository baseline and deterministic Prisma toolchain,
 verified migration pipeline, and fully reproducible clean-clone setup.
@@ -282,4 +299,6 @@ verified migration pipeline, and fully reproducible clean-clone setup.
 Milestone 1 added domain-level draft bootstrap and deterministic draft retrieval with explicit
 invariant enforcement.
 
-Current focus is Milestone 2 - Categories Ordered Within Draft.
+Milestone 2 has added category schema, repository boundary, ordering invariant enforcement, and
+draft category creation. Current focus is ADR-011 singleton-DRAFT hardening before the next category
+mutation slice.
