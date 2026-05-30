@@ -19,10 +19,10 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"],
-      "@lib/*": ["./app/lib/*"],
       "@domain/*": ["./app/lib/domain/*"],
-      "@persistence/*": ["./app/lib/persistence/*"]
+      "@persistence/*": ["./app/lib/persistence/*"],
+      "@lib/*": ["./app/lib/*"],
+      "@/*": ["./*"]
     }
   },
   "include": [
