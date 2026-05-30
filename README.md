@@ -208,7 +208,7 @@ The repository is reproducible from a clean clone.
 5. Verify toolchain health
 
    ```bash
-   npm run check
+   npm run verify
    ```
 
 6. Start the development server
@@ -238,7 +238,7 @@ fast.
 
 ## Verification Commands
 
-- Full quality gate: `npm run check`
+- Full quality gate: `npm run verify`
 - Domain tests only: `npm run test`
 - Milestone 1 proof: `npm run db:reset && npm run proof:m1`
 

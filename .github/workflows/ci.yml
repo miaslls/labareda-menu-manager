@@ -27,4 +27,4 @@ jobs:
         run: npm ci
 
       - name: run quality gate
-        run: npm run check
+        run: npm run verify
